@@ -1,0 +1,47 @@
+{
+    "environment": {
+        "python_version": "3.10.20",
+        "gpu_available": true,
+        "gpu_model": "NVIDIA A100 80GB PCIe (4 available; used CUDA_VISIBLE_DEVICES=0, single device)",
+        "key_packages": {
+            "torch": "2.2.2+cu121",
+            "transformers": "4.30.2",
+            "numpy": "1.26.4",
+            "scipy": "1.15.3",
+            "pandas": "2.3.3",
+            "einops": "0.8.2"
+        },
+        "install_notes": "uv venv with Python 3.10 (repo is 2022-era, incompatible with the default 3.14). uv/HF/tmp/mpl caches redirected to project storage to avoid home-dir disk-quota errors. HF_HUB_OFFLINE=1 after first gpt2 download."
+    },
+    "paper": "Interpretability in the Wild: a Circuit for Indirect Object Identification in GPT-2 Small (Wang et al., 2022)",
+    "overall_outcome": "All 10 steps ran and produced their intended artifacts/metrics at full/shipped scale. Every headline finding of the paper reproduced.",
+    "headline_results": {
+        "step2_baseline_N100000": {"mean_logit_diff": 3.490, "io_over_s_rate": 0.99513, "mean_io_prob": 0.5016},
+        "step3_circuit_discovery": {
+            "h_to_logits_top": "Name Movers 9.9/9.6/10.0 (neg %chg) + Negative NM 10.7/11.10 (pos %chg)",
+            "h_to_NM_queries_top": "S-Inhibition 7.3/7.9/8.6/8.10",
+            "h_to_SInh_values_top": "Induction 5.5/6.9/5.9 + Duplicate 0.1/3.0",
+            "h_to_induction_keys_top": "Previous Token 4.11/2.2",
+            "CIRCUIT_categories": 6,
+            "CIRCUIT_total_heads": 26
+        },
+        "step4_name_movers": {"nm_attention_on_IO_mean": 0.584, "pearson_rho_attn_vs_dot": 0.951, "copy_top5_NM": [100.0, 96.27, 95.93], "copy_top5_negNM_negatedOV": [100.0, 100.0]},
+        "step5_s_inhibition": {"nm_attn_IO_before": 0.584, "nm_attn_IO_after_patch": 0.287, "nm_attn_S_before": 0.136, "nm_attn_S_after_patch": 0.302, "s_inh_END_to_S2_mean": 0.437, "logit_diff_per_signal_orig_orig": 3.437},
+        "step6_validation": {"previous_4.11": 0.990, "induction_5.5": 0.931, "induction_6.9": 0.933, "duplicate_3.0": 0.667},
+        "step7_backup_name_movers": {"baseline_logit_diff": 3.264, "post_NM_knockout_logit_diff": 3.332, "emergent_backup_heads": ["10.10", "10.2", "10.6", "10.1", "11.2"]},
+        "step8_completeness": {"F_M": 3.264, "F_C_circuit": 2.866, "abs_faithfulness_circuit": 0.399, "F_C_naive": 2.690, "abs_faithfulness_naive": 0.574, "byclass_max_incompleteness_complete": 1.342, "byclass_max_incompleteness_naive": 3.007, "greedy_max_incompleteness_complete": 3.443, "greedy_max_incompleteness_naive": 3.280, "random_max_incompleteness_complete": 1.932, "random_max_incompleteness_naive": 2.685},
+        "step9_minimality": {"n_heads": 26, "all_nonzero": true, "min_score": 0.0678, "max_score": 1.3759},
+        "step10_adversarial": {"pIOI_logit_diff": 3.437, "control_addedS_logit_diff": 3.085, "adversarial_addedIO_logit_diff": 0.593, "pIOI_S_gt_IO": 0.008, "control_S_gt_IO": 0.022, "adversarial_S_gt_IO": 0.360}
+    },
+    "scale_disclosures": {
+        "step2": "Full N=100000 (batched forward, N not reduced).",
+        "step3_7_8_9": "N=100, the value shipped in experiments.py/completeness.py/minimality.py for path-patching and circuit-extraction sweeps (setup value, not a downsize).",
+        "step4_5_10": "N=500 (matches plan for scatter/copy/adversarial).",
+        "step8_greedy_random": "Greedy 10 runs x 10 iters, random 100 samples, seed=0 (shipped scale); stochastic so exact maxima vary run-to-run, qualitative ordering is the reproduced claim."
+    },
+    "code_fixes_summary": [
+        "Env: Python 3.10 + pinned torch 2.2.2/transformers 4.30.2/numpy<2 for the 2022 codebase; caches moved off the quota-limited home dir.",
+        "All step drivers replace plotly fig.show()/write_image (need a browser/kaleido) and non-importable notebook cells with headless matplotlib/numpy capture, reusing the repo's computational core functions unchanged.",
+        "Step 10: fixed a real off-by-one in gen_adv caused by show_tokens/to_tokens now prepending a BOS token (dataset word_idx is BOS-free) -- tokenized without BOS to realign the punct-insertion index."
+    ]
+}

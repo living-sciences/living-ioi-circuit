@@ -1,0 +1,70 @@
+{
+  "schema": "sai.followup.result_card/v1",
+  "headline": "IOI *behaviour* survives GPT-2 small→XL and reappears stronger in modern small models (Qwen2.5-0.5B logit-diff +5.06), but NOT in the Pythia generation (70M/410M/2.8B all prefer the wrong name); and the discovered fixed-size circuit's faithfulness collapses with GPT-2 scale — anchor 87.8% → medium 41.5% → large 11.5%.",
+  "status": "partial",
+  "metrics": [
+    {"label": "Circuit faithfulness F(C)/F(M) — gpt2-large (774M)", "value": "11.5%", "baseline": "87.8%",
+     "baseline_label": "GPT-2 small replication (step8_completeness_result.json)",
+     "note": "discovered 6-class circuit; monotone collapse small 88.6% → medium 41.5% → large 11.5% though the model still does IOI perfectly"},
+    {"label": "Circuit faithfulness F(C)/F(M) — Pythia-1.4B (across-generation)", "value": "87.7%", "baseline": "87.8%",
+     "baseline_label": "GPT-2 small replication (on-disk)",
+     "note": "the one Pythia rung that does the task (F(M)=0.69); discovery method transfers to rotary/NeoX when behaviour is present"},
+    {"label": "Baseline IOI logit-diff — Pythia-2.8B", "value": "-0.34", "baseline": "+3.49",
+     "baseline_label": "GPT-2 small replication (step2_baseline_result.json)",
+     "note": "negative = prefers the repeated subject name; whole Pythia family fails IOI (70m -0.57, 410m -0.38), pythia-1.4b only +0.85"},
+    {"label": "Baseline IOI logit-diff — Qwen2.5-0.5B (modern, behavioural)", "value": "+5.06", "baseline": "+3.49",
+     "baseline_label": "GPT-2 small replication (on-disk); Tier-2 raw-HF behavioural only",
+     "note": "modern 2024 small model does IOI even better than GPT-2; SmolLM2-1.7B +4.17. No circuit computed."},
+    {"label": "Harness check: paper circuit F(C)/F(M) via this pipeline", "value": "87.78%", "baseline": "87.8%",
+     "baseline_label": "replication step8 (on-disk)",
+     "note": "exact reproduction validates every new faithfulness number (validate_anchor.py)"}
+  ],
+  "tables": [
+    {"title": "Scale/generation ladder (this session; originals read from run/replication)",
+     "columns": ["Model", "Params", "Baseline ld", "IO>S", "F(C)/F(M)", "does IOI?"],
+     "rows": [
+       ["GPT-2 small (anchor)", "124M", "3.49", "99.5%", "87.8% / 88.6%", "yes"],
+       ["gpt2-medium", "355M", "3.58", "100%", "41.5%", "yes"],
+       ["gpt2-large", "774M", "4.48", "99.9%", "11.5%", "yes"],
+       ["gpt2-xl", "1.5B", "3.79", "99.9%", "28.4%†", "yes"],
+       ["pythia-70m", "70M", "-0.57", "37.8%", "n/a", "no"],
+       ["pythia-410m", "410M", "-0.38", "39.6%", "n/a", "no"],
+       ["pythia-1.4b", "1.4B", "0.85", "71.6%", "87.7%", "weak"],
+       ["pythia-2.8b", "2.8B", "-0.34", "40.6%", "n/a", "no"],
+       ["Qwen2.5-0.5B", "494M", "5.06", "100%", "behavioural", "yes"],
+       ["SmolLM2-1.7B", "1.7B", "4.17", "99.2%", "behavioural", "yes"]
+     ],
+     "highlight_row": 0},
+    {"title": "Strong discovered heads per class (|Δlogit-diff|≥0.2), full 6-class rungs",
+     "columns": ["Model", "name-mover", "negative", "S-inhib", "induction", "duplicate", "prev-token"],
+     "rows": [
+       ["gpt2 (124M)", "9", "2", "3", "2", "1", "1"],
+       ["gpt2-medium (355M)", "11", "2", "1", "0", "0", "0"],
+       ["gpt2-large (774M)", "8", "2", "0", "0", "0", "0"],
+       ["pythia-70m (70M)", "2", "1", "0", "0", "0", "0"],
+       ["pythia-410m (410M)", "1", "1", "0", "0", "0", "0"],
+       ["pythia-1.4b (1.4B)", "1", "0", "0", "1", "0", "0"]
+     ],
+     "highlight_row": 0}
+  ],
+  "figures": [
+    {"file": "results/faithfulness_vs_scale.png",
+     "caption": "Discovered-circuit faithfulness F(C)/F(M) (left, solid) collapses across GPT-2 scale (small 88.6% → large 11.5%) while baseline IOI logit-diff (right, dotted) stays high for GPT-2 and modern models but is negative for Pythia. Dashed line = paper 87% / anchor 87.8%. gpt2-xl open marker = 3-class partial.",
+     "alt": "Twin-axis log-x plot: GPT-2 faithfulness line dropping from ~0.89 to ~0.11; Pythia-1.4b single point at 0.88; dotted baseline logit-diffs high for GPT-2/modern, negative for Pythia."},
+    {"file": "results/behavioral_vs_scale.png",
+     "caption": "Baseline IOI mean logit-diff (IO−S) vs params. GPT-2 family (3.5–4.5) and modern small models Qwen2.5-0.5B/SmolLM2-1.7B (4.2–5.1) all solve IOI; the entire Pythia family sits at or below zero (fails), except a weak pythia-1.4b.",
+     "alt": "Log-x scatter: GPT-2 and modern models well above zero, Pythia family near/below zero."},
+    {"file": "results/headcount_vs_scale.png",
+     "caption": "Count of discovered heads whose ablation moves logit-diff by ≥0.2, by class. GPT-2 small has strong heads in all six classes; by medium/large only name-mover + negative output heads remain strong (upstream chain becomes distributed); Pythia rungs have almost none.",
+     "alt": "Stacked bars: gpt2 tallest with all six colors; medium/large mostly name-mover+negative; Pythia bars tiny."}
+  ],
+  "notes": [
+    "Completeness/greedy search (C19/C21) dropped entirely per instruction (anchor-only); only faithfulness laddered.",
+    "gpt2-xl full 6-class circuit not finished (config b alone 38 min at N=30); its 28.4% is a 3-class output-side circuit, flagged partial. pythia-2.8b config-a only.",
+    "Tier-2 (Qwen2.5-0.5B, SmolLM2-1.7B) is behavioural-only via raw HF — shows behaviour survival, not circuit survival. OLMo-2-0425-1B skipped (arch unknown to transformers 4.46.3).",
+    "Pythia rungs with F(M)≤0 (70m/410m/2.8b fail the task) have mathematically-defined but meaningless faithfulness ratios — reported as n/a, not as numbers.",
+    "Per-model faithfulness is of a mechanically-DISCOVERED top-k circuit, not the paper's hand-curated 26-head set; the two coincide on GPT-2 small (88.6% vs 87.8%), which licenses the comparison. Path-patch N reduced to 50/30 for the largest models (48GB); baseline always N=2000. Weights downloaded fresh (only gpt2 was cached); no /home writes.",
+    "Pythia name filter keeps 88/99 single-token names; all models ≥15 so none was marked not-attempted."
+  ],
+  "report_file": "report.md"
+}

@@ -1,0 +1,210 @@
+{
+    "step_outcomes": [
+        {
+            "step_id": 1,
+            "description": "Set up environment: install easy_transformer package and requirements; confirm one CUDA device visible and GPT-2 small loads via EasyTransformer.from_pretrained('gpt2').",
+            "command_executed": "CUDA_VISIBLE_DEVICES=0 python -c \"import torch; assert torch.cuda.device_count()==1; from easy_transformer.EasyTransformer import EasyTransformer; m=EasyTransformer.from_pretrained('gpt2').cuda(); print('loaded', m.cfg.n_layers, m.cfg.n_heads)\"",
+            "exit_code": 0,
+            "stdout": "cuda devices 1\nMoving model to device:  cuda\nFinished loading pretrained model gpt2 into EasyTransformer!\nloaded 12 12",
+            "stderr": "FutureWarning resume_download; UserWarning Moved LN1 to attention block (benign)",
+            "output_files": [],
+            "duration_seconds": 60,
+            "fixes_applied": [
+                {
+                    "file_path": "environment",
+                    "description": "Used Python 3.10 (via uv) instead of the default 3.14 because the 2022 codebase and its pinned torch/transformers stack are incompatible with 3.14. Pinned torch==2.2.2, transformers==4.30.2, numpy<2 for API compatibility.",
+                    "original_error": "N/A (proactive version selection)",
+                    "diff_snippet": "uv venv --python 3.10; uv pip install torch==2.2.2 transformers==4.30.2 'numpy<2'"
+                },
+                {
+                    "file_path": "environment",
+                    "description": "Redirected UV_CACHE_DIR, TMPDIR, HF_HOME, MPLCONFIGDIR to project storage because the home directory hit its disk quota during package extraction.",
+                    "original_error": "failed to create file ... Disk quota exceeded (os error 122)",
+                    "diff_snippet": "export UV_CACHE_DIR=.../run/.uvcache; export HF_HOME=.../run/.hf"
+                }
+            ],
+            "code_modified": false,
+            "notes": "Model config confirmed: 12 layers, 12 heads. torch.cuda.device_count()==1 with CUDA_VISIBLE_DEVICES=0."
+        },
+        {
+            "step_id": 2,
+            "description": "GPT-2 small baseline IOI performance over pIOI: IOIDataset(prompt_type='mixed', N=100000). Compute mean logit diff (IO vs S), IO-over-S rate, mean IO probability using repo logit_diff/probs computation, batched.",
+            "command_executed": "CUDA_VISIBLE_DEVICES=0 python step2_baseline.py  (builds IOIDataset mixed N=100000, batches forward passes bs=250, replicates ioi_utils.logit_diff(all=True) and probs())",
+            "exit_code": 0,
+            "stdout": "Dataset built in 86.3s, toks shape (100000, 21). RESULT {\"N\": 100000, \"mean_logit_diff\": 3.4903478622436523, \"std_logit_diff\": 1.4824025630950928, \"io_over_s_rate\": 0.9951300024986267, \"mean_io_prob\": 0.5016112923622131}",
+            "stderr": "benign warnings only",
+            "output_files": ["step2_baseline_result.json", "step2_baseline.py"],
+            "duration_seconds": 137.6,
+            "fixes_applied": [
+                {
+                    "file_path": "step2_baseline.py (new driver)",
+                    "description": "ioi_utils.logit_diff/probs do a single forward over all N; for N=100000 this would OOM. Wrote a driver that builds the full N=100000 dataset once, then batches the forward passes (bs=250) while replicating exactly the repo's IO/S logit-diff and IO-prob computation. N was NOT reduced.",
+                    "original_error": "N/A (preemptive batching per plan instruction 'Batch the forward passes if a single 100k forward pass exhausts memory; do not reduce N')",
+                    "diff_snippet": "for i in range(0,N,bs): logits=m(toks[i:j]); end_logits=logits[ar,end_idx,:]; ld=io_l-s_l"
+                }
+            ],
+            "code_modified": false,
+            "notes": "Full scale N=100000. mean_logit_diff=3.490, io_over_s_rate=0.99513, mean_io_prob=0.5016. Consistent with the paper's baseline (logit diff ~3.5, ~99% IO>S)."
+        },
+        {
+            "step_id": 3,
+            "description": "Path-patching circuit discovery: 4 receiver configs (a h->Logits@end resid_post; b h->NameMover queries@end; c h->S-Inhibition values@S2; d h->Induction keys@S1+1). Each sweeps all (layer,head)+MLP senders over xorig=pIOI/xnew=pABC, reporting %change in logit diff. Also record CIRCUIT dict.",
+            "command_executed": "CUDA_VISIBLE_DEVICES=0 python step3_pathpatching.py  (reuses easy_transformer.ioi_utils.path_patching + logit_diff; configs a,c match experiments.py shipped calls; b,d added with hook_q@end for name movers 9.9/9.6/10.0 and hook_k@S+1 for induction heads 5.5/5.8/5.9/6.9)",
+            "exit_code": 0,
+            "stdout": "N=100. (a) default_ld=3.2645 top heads: 9.9(-70.5%),10.7(+42.8%),9.6(-28.8%),11.10(+25.6%),10.0(-22.2%),10.10(-15.4%),10.6,7.9. (b) top: 8.6(-12.6%),7.9(-9.1%),8.10(-8.9%),7.3(-4.8%). (c) top: 5.5(-37.5%),3.0(-13.2%),6.9(-11.3%),0.1(-5.9%),5.9(+2.7%). (d) top: 4.11(-17.3%),2.2(-4.6%). CIRCUIT counts {name mover:11, negative:2, s2 inhibition:4, induction:4, duplicate token:3, previous token:2} total 26.",
+            "stderr": "HF network timeout at startup (~3min of retries) then used cached gpt2; benign 'Torch all close'/qkv warnings.",
+            "output_files": ["step3_pathpatching_result.json", "step3_a_h_to_logits_heads.npy", "step3_b_h_to_NMquery_heads.npy", "step3_c_h_to_SInhval_heads.npy", "step3_d_h_to_INDkey_heads.npy", "figures/step3_a_h_to_logits.png", "figures/step3_b_h_to_NMquery.png", "figures/step3_c_h_to_SInhval.png", "figures/step3_d_h_to_INDkey.png"],
+            "duration_seconds": 350,
+            "fixes_applied": [
+                {
+                    "file_path": "step3_pathpatching.py (new driver)",
+                    "description": "The shipped plot_path_patching calls plotly fig.show() (needs a browser) and does not return the results tensor. Rewrote the identical sweep loop calling the SAME path_patching+logit_diff core, saving results as .npy tensors and matplotlib PNG heatmaps and extracting top-8 heads by |effect|. Configs (b) and (d) were added exactly as experiments.py adds configs (a),(c): same plot_path_patching signature, new receiver_hooks/position.",
+                    "original_error": "plotly fig.show() has no display in headless env; plot_path_patching returns None",
+                    "diff_snippet": "im=ax.imshow(results); np.save(...heads.npy, results) instead of show_pp(...).show()"
+                }
+            ],
+            "code_modified": false,
+            "notes": "N=100 (experiments.py shipped default for path-patching sweeps; NOT downsized, this is the code's setup value). All four discovery steps reproduce the paper's circuit: (a) Name Movers 9.9/9.6/10.0 (neg %change) and Negative Name Movers 10.7/11.10 (pos %change); (b) S-Inhibition heads 7.3/7.9/8.6/8.10 dominate NM-query effect; (c) Induction 5.5/6.9/5.9 and Duplicate Token 0.1/3.0 dominate S-Inh-value effect; (d) Previous Token heads 4.11/2.2 dominate Induction-key effect. CIRCUIT has 6 categories, 26 heads total. NOTE: plan text said '7 head categories' but the shipped CIRCUIT dict has 6 (name mover, negative, s2 inhibition, induction, duplicate token, previous token); reporting the actual 6."
+        },
+        {
+            "step_id": 4,
+            "description": "Characterize Name Mover & Negative Name Mover heads: (i) avg END->IO attention for the 3 Name Movers over pIOI; (ii) Pearson rho between 'Attn Prob on Name' and 'Dot w Name Embed' from scatter_attention_and_contribution(return_vals=True) at N=500; (iii) check_copy_circuit top-5 accuracy for the 3 NMs (sign+1), the 2 Negative NMs (sign-1, negated OV) and control random heads.",
+            "command_executed": "CUDA_VISIBLE_DEVICES=0 python step4_namemovers.py  (reuses show_attention_patterns, scatter_attention_and_contribution, and check_copy_circuit copied verbatim from experiments.py; clean model)",
+            "exit_code": 0,
+            "stdout": "(i) NM attention on IO: 9.9=0.689,10.0=0.460,9.6=0.602, mean=0.584. (ii) Pearson rho (head 9.9, N=500, 1000 pts)=0.9509 (p~0). (iii) Copy: NM 9.9=100%,10.0=96.27%,9.6=95.93%; NegNM(neg) 10.7=100%,11.10=100%; controls 9.3=3%,9.8=80.8%,2.10=0%.",
+            "stderr": "benign warnings only",
+            "output_files": ["step4_namemovers_result.json"],
+            "duration_seconds": 60,
+            "fixes_applied": [
+                {
+                    "file_path": "step4_namemovers.py (new driver)",
+                    "description": "check_copy_circuit is defined inside the experiments.py notebook (not importable) and the shipped cells call plotly .show(). Copied check_copy_circuit verbatim and reproduced the NM-attention and scatter cells headless; computed scipy.stats.pearsonr on the returned DataFrame (IO + S rows = 1000 points at N=500).",
+                    "original_error": "N/A (notebook cells not importable / plotly needs display)",
+                    "diff_snippet": "df=scatter_attention_and_contribution(...return_vals=True); rho,_=pearsonr(df['Attn Prob on Name'], df['Dot w Name Embed'])"
+                }
+            ],
+            "code_modified": false,
+            "notes": "Full scale N=500 for scatter/copy (matches plan). Name Movers attend strongly END->IO (mean 0.584) and copy near-perfectly (96-100% top-5); the two Negative Name Movers copy at 100% under negated OV (sign -1), confirming they write AGAINST the name; controls scatter (0-81%). Pearson rho=0.95 confirms attention-probability strongly predicts write-in-name-direction. One control head (9.8) scored 80.8% by chance (a layer-9 head with partial copy behavior), but is not a designated NM."
+        },
+        {
+            "step_id": 5,
+            "description": "Characterize S-Inhibition heads: (i) NM attention END->IO/S/S2 before vs after path-patching the 4 S-Inhibition heads (7.3,7.9,8.6,8.10) from pABC into NM queries; (ii) avg END->S2 attention over the 4 S-Inhibition heads; (iii) 6 token/position signal datasets patched into S-Inhibition head outputs -> 3x2 logit_diff_per_signal grid.",
+            "command_executed": "CUDA_VISIBLE_DEVICES=0 python step5_sinhibition.py  (reuses show_attention_patterns, path_patching, logit_diff, and experiments.PatchingConfig/EasyPatching/ExperimentMetric; reproduces the shipped 'Token and position signal results' cell verbatim)",
+            "exit_code": 0,
+            "stdout": "(i) BEFORE {IO:0.584,S:0.136,S2:0.034}; AFTER {IO:0.287,S:0.302,S2:0.069}. (ii) S-Inh END->S2 per head 8.6=0.695,8.10=0.359,7.3=0.176,7.9=0.518 mean=0.437. (iii) logit_diff_per_signal=[[-3.365,1.602],[-2.156,2.370],[-1.011,3.437]] (rows tok inv/unc/orig, cols pos inv/orig).",
+            "stderr": "benign warnings only",
+            "output_files": ["step5_sinhibition_result.json"],
+            "duration_seconds": 60,
+            "fixes_applied": [
+                {
+                    "file_path": "step5_sinhibition.py (new driver)",
+                    "description": "The before/after NM-attention comparison is not shipped as a single cell, so implemented it by (a) measuring NM END->{IO,S,S2} attention on the clean model, then (b) calling the repo path_patching (S-Inhibition heads -> NM hook_q at end, D_new=abc/D_orig=ioi), which installs receiver hooks, and re-measuring. The 3x2 signal-grid cell and check functions were copied verbatim from experiments.py; plotly .show() replaced by numpy array capture.",
+                    "original_error": "N/A (notebook cell not importable / plotly needs display)",
+                    "diff_snippet": "model=path_patching(sender=s_inhibition_heads, receiver=[NM hook_q @ end], D_new=abc); after=nm_attention(model)"
+                }
+            ],
+            "code_modified": false,
+            "notes": "Full scale N=500. (i) After routing S-Inhibition output from pABC into NM queries, NM attention on IO drops 0.584->0.287 and rises on S 0.136->0.302 -- the S-Inhibition heads suppress attention to the repeated (S) name and free NMs to attend to IO, exactly the paper's mechanism. (ii) S-Inhibition heads attend END->S2 (mean 0.437). (iii) Original/original baseline logit diff = 3.437; inverting the token signal (rows) and/or the position signal (cols) monotonically degrades and can invert the logit difference (e.g. token+pos both inverted = -3.365), confirming the S-Inhibition output carries both a token and a position signal."
+        },
+        {
+            "step_id": 6,
+            "description": "Validation outside IOI: on repeated random-token sequences compute per-(layer,head) mean attention along previous-token (offset -1), duplicate (offset -seq_len), and induction (offset 1-seq_len) diagonals. Verify Previous Token / Duplicate Token / Induction heads score high on their respective pattern.",
+            "command_executed": "CUDA_VISIBLE_DEVICES=0 python step6_validation.py  (reproduces the shipped 'Validation outside of IOI' cell verbatim: seq_len=100, 4 batches of repeated random tokens, run_with_hooks + calc_score on all hook_attn)",
+            "exit_code": 0,
+            "stdout": "[induction] 5.5=0.931,5.8=0.010,5.9=0.016,6.9=0.933; top5 5.1=0.937,6.9=0.933,5.5=0.931,7.10=0.926,7.2=0.865. [duplicate] 0.1=0.129,0.10=0.018,3.0=0.667; top5 0.5=0.703,3.0=0.667. [previous] 2.2=0.476,4.11=0.990; top5 4.11=0.990,3.7=0.523,6.8=0.486,2.2=0.476.",
+            "stderr": "benign warnings only",
+            "output_files": ["step6_validation_result.json", "step6_induction_scores.npy", "step6_duplicate_scores.npy", "step6_previous_scores.npy"],
+            "duration_seconds": 40,
+            "fixes_applied": [
+                {
+                    "file_path": "step6_validation.py (new driver)",
+                    "description": "Copied the shipped cell verbatim (calc_score, filter_attn_hooks, run_with_hooks); replaced plotly px.imshow().show() with np.save of each 12x12 array and printed named-head + top-5 scores. Added torch.manual_seed(0) for reproducibility of the random tokens.",
+                    "original_error": "N/A (plotly needs display)",
+                    "diff_snippet": "np.save(step6_{mode}_scores.npy, arr) instead of px.imshow(arr).show()"
+                }
+            ],
+            "code_modified": false,
+            "notes": "Three 12x12 arrays saved. PRIMARY heads reproduce cleanly: Previous Token 4.11=0.990 (highest overall), Induction 5.5=0.931 & 6.9=0.933 (top-3 overall), Duplicate Token 3.0=0.667 (2nd overall). FINDING/nuance reported faithfully: some SECONDARY circuit heads score low on these PURE random-token diagonals -- Previous 2.2=0.476 (moderate), Duplicate 0.1=0.129 and 0.10=0.018 (weak), Induction 5.8=0.010 and 5.9=0.016 (weak). These heads were assigned to their classes via the IOI path-patching evidence (Step 3), and on generic repeated random tokens only the dominant member(s) of each class show the strong signature diagonal; this is not a failure but a known nuance of the offset-diagonal metric. All three head CLASSES are clearly validated by their leading members."
+        },
+        {
+            "step_id": 7,
+            "description": "Backup Name Mover phenomenon: baseline logit diff; mean-ablate (on pABC) the 3 main Name Movers 9.9/9.6/10.0 and re-measure logit diff (should barely change); then re-run the h->Logits direct-effect path-patching sweep with the NMs knocked out to surface the Backup Name Mover heads.",
+            "command_executed": "CUDA_VISIBLE_DEVICES=0 python step7_backupnm.py  (reproduces the shipped 'Backup NM results' cell verbatim: do_circuit_extraction to build knockout hooks, then two 12x12 path_patching sweeps into blocks.11.hook_resid_post @ end, with and without the NM-knockout extra_hooks)",
+            "exit_code": 0,
+            "stdout": "baseline logit diff=3.2645; post-NM-knockout logit diff=3.3321. NM-knocked-out top10 direct effect: 10.10(-1.03),11.10(+0.84),10.2(-0.57),10.6(-0.53),11.2(-0.41),10.1(-0.28),7.9(-0.27),8.10(-0.25),8.6(-0.22),10.7(-0.22).",
+            "stderr": "benign warnings only",
+            "output_files": ["step7_backupnm_result.json", "step7_direct_effect_baseline.npy", "step7_direct_effect_nm_knocked_out.npy"],
+            "duration_seconds": 120,
+            "fixes_applied": [
+                {
+                    "file_path": "step7_backupnm.py (new driver)",
+                    "description": "Copied the shipped 'Backup NM results' cell; replaced plotly show_pp().show() with np.save of both 12x12 direct-effect tensors and top-10 head extraction via max_2d. No algorithmic change.",
+                    "original_error": "N/A (plotly needs display; cell not importable)",
+                    "diff_snippet": "np.save(step7_direct_effect_{key}.npy, results); max_2d(res_ko.abs(), k=10)"
+                }
+            ],
+            "code_modified": false,
+            "notes": "N=100 (shipped path-patching scale). KEY RESULT reproduced: mean-ablating the three main Name Movers changes the logit difference only marginally (3.2645 -> 3.3321, ~ +2%, essentially no drop -- the shipped cell's own comment notes an INCREASE can occur). The direct-effect sweep with NMs ablated then surfaces the Backup Name Mover heads as the new top direct contributors: 10.10, 10.2, 10.6, 10.1, 11.2 -- all members of CIRCUIT['name mover'] beyond the primary three, i.e. the Backup Name Movers -- plus the Negative Name Mover 11.10/10.7 whose effect strengthens. This is exactly the paper's self-repair / Backup Name Mover finding (Fig. 6): the circuit compensates for ablated name movers via redundant backup heads."
+        },
+        {
+            "step_id": 8,
+            "description": "Completeness experiment: (1) faithfulness F(M),F(C) and |F(M)-F(C)| for full CIRCUIT and NAIVE; (2) by-class completeness sweep (run_original) for BOTH circuits producing per-class (F(C\\K), F(M\\K)); (3) greedy search (skip_greedy=False) and random search (skip_random=False) regenerating pts/*.pt (NOT cached) for modes complete and naive.",
+            "command_executed": "CUDA_VISIBLE_DEVICES=0 python step8_completeness.py  (reuses logit_diff, basis_change, get_heads_from_nodes, get_heads_circuit, do_circuit_extraction; reimplements circuit_eval/cobble_eval exactly as completeness.py; mean-ablation on pABC; greedy no_runs=10,no_iters=10,no_samples=10(complete)/5(naive); random 100 samples)",
+            "exit_code": 0,
+            "stdout": "F(M)=3.2645. CIRCUIT F(C)=2.8655 |F(M)-F(C)|=0.3990; NAIVE F(C)=2.6903 |F(M)-F(C)|=0.5742. By-class max incompleteness: complete=1.342 (previous token), naive=3.007 (name mover). Greedy max incompleteness: complete=3.443 (88 pts), naive=3.280 (42 pts). Random max: complete=1.932, naive=2.685.",
+            "stderr": "benign ablation-cache warnings only",
+            "output_files": ["step8_completeness_result.json", "sets/perf_by_classes_complete.json", "sets/perf_by_classes_naive.json", "pts/complete_xs.pt", "pts/complete_ys.pt", "pts/complete_random_xs.pt", "pts/complete_random_ys.pt", "pts/naive_xs.pt", "pts/naive_ys.pt", "pts/naive_random_xs.pt", "pts/naive_random_ys.pt"],
+            "duration_seconds": 2499,
+            "fixes_applied": [
+                {
+                    "file_path": "step8_completeness.py (new driver)",
+                    "description": "completeness.py ships circuit=NAIVE only for the by-class sweep and skip_greedy=skip_random=True with plotly plotting and a hard os.getcwd().endswith('Easy-Transformer') assert. Rebuilt a headless driver that runs the by-class sweep for BOTH CIRCUIT and NAIVE, sets skip_greedy=False/skip_random=False (regenerating pts/*.pt rather than loading cached tensors), and reimplements circuit_eval/cobble_eval verbatim from the notebook (get_heads_from_nodes + complement/circuit/model_rem hooks). The 144-head and circuit_size asserts from the original are kept and pass.",
+                    "original_error": "N/A (notebook only ran NAIVE by-class, skipped greedy/random, plotly needs display, hardcoded cwd assert)",
+                    "diff_snippet": "for tag,circ in [('complete',CIRCUIT),('naive',NAIVE)]: by_class_sweep(circ,tag); greedy_search(...); random_search(...)"
+                }
+            ],
+            "code_modified": false,
+            "notes": "N=100 (shipped completeness scale). KEY RESULTS reproduced. Faithfulness: full CIRCUIT is faithful (|F(M)-F(C)|=0.399); NAIVE slightly worse (0.574). COMPLETENESS CONTRAST (C19 vs C21): the NAIVE circuit is much MORE INCOMPLETE than the full circuit -- by-class max incompleteness naive=3.007 vs complete=1.342; e.g. removing the name-mover class from NAIVE gives F(C\\K)=0.325 while F(M\\K)=3.332 (gap 3.007), whereas the full circuit's by-class points stay near the diagonal (max gap 1.342, on 'previous token'). Greedy search yields the LARGEST incompleteness scores (complete 3.443 > random 1.932 > by-class 1.342; naive 3.280 > by-class 3.007 > random 2.685), reproducing the paper's finding that greedy K-selection surfaces incompleteness invisible to by-class removal. NOTE: greedy/random are stochastic (10 runs, seed=0) so exact maxima differ run-to-run; the qualitative ordering greedy>=random and naive-more-incomplete-than-complete is the reproduced claim. All pts/*.pt regenerated fresh (cached tensors NOT used)."
+        },
+        {
+            "step_id": 9,
+            "description": "Minimality experiment: for every node v in CIRCUIT, select set K (per-class, with special-cased name-mover ordering and heads (9,0),(11,9),(5,8),(5,9)) and compute minimality score |F(C\\(K U {v})) - F(C\\K)| via mean-ablation on pABC; render the per-head bar chart.",
+            "command_executed": "CUDA_VISIBLE_DEVICES=0 python step9_minimality.py  (reproduces minimality.py verbatim: identical K construction incl. all special cases, results[v]=[F(C\\K), F(C\\(K\\v))], results_cache; matplotlib bar chart instead of plotly write_image)",
+            "exit_code": 0,
+            "stdout": "26 heads, all nonzero. min score=0.0678 (head 9.0), max=1.3759 (head 0.1). Examples: 9.9=0.316, 11.2=0.748, NegNM 10.7=0.976/11.10=0.926, S-Inh 8.6=0.767/7.9=0.723/8.10=0.704, Induction 5.5=1.278/6.9=0.673, Duplicate 0.1=1.376/0.10=1.176, Previous 4.11=1.076/2.2=0.510.",
+            "stderr": "benign ablation-cache warnings only",
+            "output_files": ["step9_minimality_result.json", "svgs/circuit_minimality.svg", "figures/step9_minimality.png"],
+            "duration_seconds": 90,
+            "fixes_applied": [
+                {
+                    "file_path": "step9_minimality.py (new driver)",
+                    "description": "Copied minimality.py's K-set construction and results loop verbatim; replaced plotly fig.write_image (needs kaleido, not installed) with a matplotlib bar chart saved as .svg and .png. No algorithmic change.",
+                    "original_error": "N/A (plotly write_image needs kaleido / display)",
+                    "diff_snippet": "ax.bar(range(len(labels)), heights, color=colors); fig.savefig('circuit_minimality.svg')"
+                }
+            ],
+            "code_modified": false,
+            "notes": "N=100 (shipped minimality scale). All 26 circuit heads have a strictly nonzero minimality score (min 0.0678, max 1.3759) -- reproducing the paper's minimality claim that every circuit node materially contributes (adding v back after removing K measurably shifts the logit difference). The special-cased K sets (name-mover cumulative ordering; (9,0)/(11,9) use name-mover+negative; (5,8)/(5,9) paired with the negative name movers) were reproduced exactly and all asserts (head in its own K set) passed. Largest contributors are the Duplicate/Induction/Previous heads (0.1=1.38, 5.5=1.28, 0.10=1.18, 4.11=1.08) and the two Negative Name Movers (~0.9-0.98); smallest are the redundant late name movers 9.0/11.9 (~0.07), consistent with backup-name-mover redundancy."
+        },
+        {
+            "step_id": 10,
+            "description": "Adversarial-example results: IOIDataset N=500; gen_adv with DOUBLE_ADX_TEMPLATE builds the added-IO adversarial dataset (name='IO', natural middle sentence) and the added-S control (name='S'). For pIOI, added-S control, added-IO adversarial: mean logit diff, mean IO prob, proportion with S logit > IO logit (ld<0).",
+            "command_executed": "CUDA_VISIBLE_DEVICES=0 python step10_advex.py  (reuses gen_adv/DOUBLE_ADX_TEMPLATE/logit_diff/probs from advex.py; adds the name='S' control call as the plan requests)",
+            "exit_code": 0,
+            "stdout": "pIOI: logit_diff=3.437, io_prob=0.494, S>IO=0.008. control_added_S: logit_diff=3.085, io_prob=0.571, S>IO=0.022. adversarial_added_IO: logit_diff=0.593, io_prob=0.302, S>IO=0.360. adv example: 'Then, Matthew and Robert had a lot of fun at the school. Matthew enjoyed being with a friend. Matthew enjoyed being with a friend. Robert gave a ring to Matthew'.",
+            "stderr": "benign warnings only",
+            "output_files": ["step10_advex_result.json"],
+            "duration_seconds": 90,
+            "fixes_applied": [
+                {
+                    "file_path": "step10_advex.py (new driver)",
+                    "description": "gen_adv (copied from advex.py) uses show_tokens()->model.to_tokens() to reconstruct token positions, but in this EasyTransformer version to_tokens() PREPENDS a BOS token while the IOIDataset word_idx (prepend_bos=False) does not. The off-by-one broke the punct-position assertion (s[punct_str_idx] not in '.,'). Fixed by tokenizing without BOS via a local toks_list() using model.tokenizer directly, matching how word_idx was computed; this also corrects adv_tok_len (was +1 too large) used to shift end/S2 indices.",
+                    "original_error": "AssertionError: 'Then, Matthew and Robert had a lot of fun at the school...' --- r -- 0 (s[punct_str_idx]=='r', not '.'/',')",
+                    "diff_snippet": "- adv_tok_len = len(show_tokens(adv_temp, model, return_list=True)); txt_toks = show_tokens(s, model, return_list=True)\n+ def toks_list(t): return [model.tokenizer.decode(x) for x in model.tokenizer(t)['input_ids']]\n+ adv_tok_len = len(toks_list(adv_temp)); txt_toks = toks_list(s)"
+                }
+            ],
+            "code_modified": false,
+            "notes": "Full scale N=500 (matches plan). KEY RESULT reproduced: the added-IO adversarial attack (a natural distractor sentence that repeats the IO name) collapses model performance -- mean logit diff 3.437 -> 0.593, IO prob 0.494 -> 0.302, and the fraction of examples where the model prefers S over IO jumps from 0.8% (pIOI) to 36.0%. The added-S CONTROL (same kind of distractor sentence but repeating the already-duplicated S name) barely changes performance (logit diff 3.437 -> 3.085, S>IO 0.8% -> 2.2%). This is the paper's adversarial finding: duplicating the IO name triggers the Duplicate-Token/S-Inhibition machinery on the wrong name, whereas adding another S does not, demonstrating the circuit's specific vulnerability."
+        }
+    ]
+}

@@ -1,0 +1,450 @@
+{
+  "params_M": {
+    "gpt2": 124,
+    "gpt2-medium": 355,
+    "gpt2-large": 774,
+    "gpt2-xl": 1558,
+    "EleutherAI/pythia-70m": 70,
+    "EleutherAI/pythia-410m": 410,
+    "EleutherAI/pythia-1.4b": 1400,
+    "EleutherAI/pythia-2.8b": 2800,
+    "Qwen/Qwen2.5-0.5B": 494,
+    "HuggingFaceTB/SmolLM2-1.7B": 1710
+  },
+  "series": {
+    "baseline_logit_diff": {
+      "gpt2": 3.4951,
+      "gpt2-medium": 3.5827,
+      "gpt2-large": 4.4811,
+      "gpt2-xl": 3.7885,
+      "EleutherAI/pythia-70m": -0.5724,
+      "EleutherAI/pythia-410m": -0.3796,
+      "EleutherAI/pythia-1.4b": 0.8518,
+      "EleutherAI/pythia-2.8b": -0.3361,
+      "Qwen/Qwen2.5-0.5B": 5.0636,
+      "HuggingFaceTB/SmolLM2-1.7B": 4.1718
+    },
+    "io_over_s_rate": {
+      "gpt2": 0.9945,
+      "gpt2-medium": 1.0,
+      "gpt2-large": 0.9995,
+      "gpt2-xl": 0.999,
+      "EleutherAI/pythia-70m": 0.378,
+      "EleutherAI/pythia-410m": 0.3965,
+      "EleutherAI/pythia-1.4b": 0.716,
+      "EleutherAI/pythia-2.8b": 0.4065,
+      "Qwen/Qwen2.5-0.5B": 1.0,
+      "HuggingFaceTB/SmolLM2-1.7B": 0.9924
+    },
+    "F_M": {
+      "gpt2": 3.5024,
+      "gpt2-medium": 3.3913,
+      "gpt2-large": 4.4351,
+      "gpt2-xl": 3.9404,
+      "EleutherAI/pythia-70m": -0.7036,
+      "EleutherAI/pythia-410m": -0.3043,
+      "EleutherAI/pythia-1.4b": 0.6881,
+      "EleutherAI/pythia-2.8b": -0.5743
+    },
+    "F_C": {
+      "gpt2": 3.1038,
+      "gpt2-medium": 1.4058,
+      "gpt2-large": 0.5089,
+      "gpt2-xl": 1.1198,
+      "EleutherAI/pythia-70m": -0.7223,
+      "EleutherAI/pythia-410m": -0.664,
+      "EleutherAI/pythia-1.4b": 0.6033,
+      "EleutherAI/pythia-2.8b": -1.3061
+    },
+    "faithfulness_FC_over_FM": {
+      "gpt2": 0.8862,
+      "gpt2-medium": 0.4145,
+      "gpt2-large": 0.1147,
+      "gpt2-xl": 0.2842,
+      "EleutherAI/pythia-70m": 1.0266,
+      "EleutherAI/pythia-410m": 2.1822,
+      "EleutherAI/pythia-1.4b": 0.8767,
+      "EleutherAI/pythia-2.8b": 2.2744
+    },
+    "faithfulness_interpretable_FM_gt0": {
+      "gpt2": true,
+      "gpt2-medium": true,
+      "gpt2-large": true,
+      "gpt2-xl": true,
+      "EleutherAI/pythia-70m": false,
+      "EleutherAI/pythia-410m": false,
+      "EleutherAI/pythia-1.4b": true,
+      "EleutherAI/pythia-2.8b": false
+    },
+    "N_pathpatch": {
+      "gpt2": 100,
+      "gpt2-medium": 100,
+      "gpt2-large": 30,
+      "gpt2-xl": 30,
+      "EleutherAI/pythia-70m": 100,
+      "EleutherAI/pythia-410m": 100,
+      "EleutherAI/pythia-1.4b": 50,
+      "EleutherAI/pythia-2.8b": 30
+    },
+    "total_heads_template": {
+      "gpt2": 26,
+      "gpt2-medium": 26,
+      "gpt2-large": 26,
+      "gpt2-xl": 17,
+      "EleutherAI/pythia-70m": 26,
+      "EleutherAI/pythia-410m": 26,
+      "EleutherAI/pythia-1.4b": 26,
+      "EleutherAI/pythia-2.8b": 13
+    },
+    "num_classes_discovered": {
+      "gpt2": 6,
+      "gpt2-medium": 6,
+      "gpt2-large": 6,
+      "gpt2-xl": 3,
+      "EleutherAI/pythia-70m": 6,
+      "EleutherAI/pythia-410m": 6,
+      "EleutherAI/pythia-1.4b": 6,
+      "EleutherAI/pythia-2.8b": 2
+    },
+    "configs_run": {
+      "gpt2": {
+        "a": true,
+        "b": true,
+        "c": true,
+        "d": true
+      },
+      "gpt2-medium": {
+        "a": true,
+        "b": true,
+        "c": true,
+        "d": true
+      },
+      "gpt2-large": {
+        "a": true,
+        "b": true,
+        "c": true,
+        "d": true
+      },
+      "gpt2-xl": {
+        "a": true,
+        "b": true,
+        "c": false,
+        "d": false
+      },
+      "EleutherAI/pythia-70m": {
+        "a": true,
+        "b": true,
+        "c": true,
+        "d": true
+      },
+      "EleutherAI/pythia-410m": {
+        "a": true,
+        "b": true,
+        "c": true,
+        "d": true
+      },
+      "EleutherAI/pythia-1.4b": {
+        "a": true,
+        "b": true,
+        "c": true,
+        "d": true
+      },
+      "EleutherAI/pythia-2.8b": {
+        "a": true,
+        "b": false,
+        "c": false,
+        "d": false
+      }
+    }
+  },
+  "persistence_matrix_template": {
+    "gpt2": {
+      "name mover": 11,
+      "s2 inhibition": 4,
+      "induction": 4,
+      "duplicate token": 3,
+      "previous token": 2,
+      "negative": 2
+    },
+    "gpt2-medium": {
+      "name mover": 11,
+      "s2 inhibition": 4,
+      "induction": 4,
+      "duplicate token": 3,
+      "previous token": 2,
+      "negative": 2
+    },
+    "gpt2-large": {
+      "name mover": 11,
+      "s2 inhibition": 4,
+      "induction": 4,
+      "duplicate token": 3,
+      "previous token": 2,
+      "negative": 2
+    },
+    "gpt2-xl": {
+      "name mover": 11,
+      "s2 inhibition": 4,
+      "induction": 0,
+      "duplicate token": 0,
+      "previous token": 0,
+      "negative": 2
+    },
+    "EleutherAI/pythia-70m": {
+      "name mover": 11,
+      "s2 inhibition": 4,
+      "induction": 4,
+      "duplicate token": 3,
+      "previous token": 2,
+      "negative": 2
+    },
+    "EleutherAI/pythia-410m": {
+      "name mover": 11,
+      "s2 inhibition": 4,
+      "induction": 4,
+      "duplicate token": 3,
+      "previous token": 2,
+      "negative": 2
+    },
+    "EleutherAI/pythia-1.4b": {
+      "name mover": 11,
+      "s2 inhibition": 4,
+      "induction": 4,
+      "duplicate token": 3,
+      "previous token": 2,
+      "negative": 2
+    },
+    "EleutherAI/pythia-2.8b": {
+      "name mover": 11,
+      "s2 inhibition": 0,
+      "induction": 0,
+      "duplicate token": 0,
+      "previous token": 0,
+      "negative": 2
+    }
+  },
+  "persistence_matrix_strong_heads": {
+    "gpt2": {
+      "name mover": 9,
+      "negative": 2,
+      "s2 inhibition": 3,
+      "induction": 2,
+      "duplicate token": 1,
+      "previous token": 1
+    },
+    "gpt2-medium": {
+      "name mover": 11,
+      "negative": 2,
+      "s2 inhibition": 1,
+      "induction": 0,
+      "duplicate token": 0,
+      "previous token": 0
+    },
+    "gpt2-large": {
+      "name mover": 8,
+      "negative": 2,
+      "s2 inhibition": 0,
+      "induction": 0,
+      "duplicate token": 0,
+      "previous token": 0
+    },
+    "gpt2-xl": {
+      "name mover": 5,
+      "negative": 1,
+      "s2 inhibition": 0,
+      "induction": null,
+      "duplicate token": null,
+      "previous token": null
+    },
+    "EleutherAI/pythia-70m": {
+      "name mover": 2,
+      "negative": 1,
+      "s2 inhibition": 0,
+      "induction": 0,
+      "duplicate token": 0,
+      "previous token": 0
+    },
+    "EleutherAI/pythia-410m": {
+      "name mover": 1,
+      "negative": 1,
+      "s2 inhibition": 0,
+      "induction": 0,
+      "duplicate token": 0,
+      "previous token": 0
+    },
+    "EleutherAI/pythia-1.4b": {
+      "name mover": 1,
+      "negative": 0,
+      "s2 inhibition": 0,
+      "induction": 1,
+      "duplicate token": 0,
+      "previous token": 0
+    },
+    "EleutherAI/pythia-2.8b": {
+      "name mover": 0,
+      "negative": 0,
+      "s2 inhibition": null,
+      "induction": null,
+      "duplicate token": null,
+      "previous token": null
+    }
+  },
+  "strong_head_total_abcd": {
+    "gpt2": 18,
+    "gpt2-medium": 14,
+    "gpt2-large": 10,
+    "EleutherAI/pythia-70m": 3,
+    "EleutherAI/pythia-410m": 2,
+    "EleutherAI/pythia-1.4b": 2
+  },
+  "fits": {
+    "faithfulness_vs_logparams_gpt2_FMpos": {
+      "n": 4,
+      "slope_per_decade": -0.6086667700241418,
+      "intercept": 2.0568953431446046,
+      "r2": 0.7515709506531092,
+      "p_value": 0.13306808188121877,
+      "std_err": 0.2474462008695028
+    },
+    "faithfulness_vs_logparams_all_FMpos": {
+      "n": 5,
+      "slope_per_decade": -0.28341758515658916,
+      "intercept": 1.301523572283295,
+      "r2": 0.13711811647555552,
+      "p_value": 0.5395340740744272,
+      "std_err": 0.41048228761803246
+    },
+    "headcount_template_vs_logparams_full6class": {
+      "n": 6,
+      "slope_per_decade": 0.0,
+      "intercept": 26.0,
+      "r2": 0.0,
+      "p_value": 1.0,
+      "std_err": 0.0
+    },
+    "strong_headtotal_vs_logparams_abcd": {
+      "n": 6,
+      "slope_per_decade": -3.6500632982389796,
+      "intercept": 17.37480358446898,
+      "r2": 0.06609608831594935,
+      "p_value": 0.6228589816094474,
+      "std_err": 6.860150105585624
+    },
+    "namemover_template_vs_logparams": {
+      "n": 8,
+      "slope_per_decade": 0.0,
+      "intercept": 11.0,
+      "r2": 0.0,
+      "p_value": 1.0,
+      "std_err": 0.0
+    },
+    "namemover_strong_vs_logparams": {
+      "n": 8,
+      "slope_per_decade": -2.4528870524121538,
+      "intercept": 11.301797317184391,
+      "r2": 0.1032678543988583,
+      "p_value": 0.4376595151827323,
+      "std_err": 2.9508743537825666
+    },
+    "sinhib_template_vs_logparams": {
+      "n": 7,
+      "slope_per_decade": 0.0,
+      "intercept": 4.0,
+      "r2": 0.0,
+      "p_value": 1.0,
+      "std_err": 0.0
+    },
+    "sinhib_strong_vs_logparams": {
+      "n": 7,
+      "slope_per_decade": -1.0536549859249305,
+      "intercept": 3.3303441321922618,
+      "r2": 0.22443670082911535,
+      "p_value": 0.28286839732745905,
+      "std_err": 0.8759415170497389
+    },
+    "logitdiff_vs_logparams_gpt2": {
+      "n": 4,
+      "slope_per_decade": 0.5142729118640684,
+      "intercept": 2.457983436035419,
+      "r2": 0.2946919810354482,
+      "p_value": 0.45714460393632605,
+      "std_err": 0.5625795007061741
+    },
+    "logitdiff_vs_logparams_pythia": {
+      "n": 4,
+      "slope_per_decade": 0.4586325497201553,
+      "intercept": -1.3761599618071323,
+      "r2": 0.2465326971357695,
+      "p_value": 0.5034794091522794,
+      "std_err": 0.5669500760129752
+    },
+    "logitdiff_vs_logparams_all_incl_tier2": {
+      "n": 10,
+      "slope_per_decade": 0.5006965147622813,
+      "intercept": 1.027592874134647,
+      "r2": 0.013208892665695344,
+      "p_value": 0.7518853433582801,
+      "std_err": 1.5300618363088714
+    }
+  },
+  "generation_contrast": {
+    "gpt2_family_logitdiff": {
+      "gpt2": 3.495,
+      "gpt2-medium": 3.583,
+      "gpt2-large": 4.481,
+      "gpt2-xl": 3.788
+    },
+    "pythia_family_logitdiff": {
+      "EleutherAI/pythia-70m": -0.572,
+      "EleutherAI/pythia-410m": -0.38,
+      "EleutherAI/pythia-1.4b": 0.852,
+      "EleutherAI/pythia-2.8b": -0.336
+    },
+    "gpt2_family_io_over_s": {
+      "gpt2": 0.9945,
+      "gpt2-medium": 1.0,
+      "gpt2-large": 0.9995,
+      "gpt2-xl": 0.999
+    },
+    "pythia_family_io_over_s": {
+      "EleutherAI/pythia-70m": 0.378,
+      "EleutherAI/pythia-410m": 0.3965,
+      "EleutherAI/pythia-1.4b": 0.716,
+      "EleutherAI/pythia-2.8b": 0.4065
+    },
+    "matched_scale_pairs": [
+      {
+        "gpt2": "gpt2-large (774M)",
+        "ld": 4.481,
+        "pythia": "pythia-1.4b (1.4B)",
+        "pythia_ld": 0.852
+      },
+      {
+        "gpt2": "gpt2-xl (1.5B)",
+        "ld": 3.788,
+        "pythia": "pythia-1.4b (1.4B)",
+        "pythia_ld": 0.852
+      }
+    ],
+    "faithfulness_matched": {
+      "gpt2-small (124M)": 0.8862,
+      "pythia-1.4b (1.4B, only FM>0 Pythia)": 0.8767
+    }
+  },
+  "tier2_behavioral": {
+    "Qwen/Qwen2.5-0.5B": {
+      "logit_diff": 5.0636,
+      "io_over_s": 1.0
+    },
+    "HuggingFaceTB/SmolLM2-1.7B": {
+      "logit_diff": 4.1718,
+      "io_over_s": 0.9924
+    }
+  },
+  "notes": {
+    "strong_threshold": "|pct_change/100 * default_logit_diff| >= 0.2 (matches 001 card)",
+    "template_note": "discovered_circuit_counts is a FIXED per-class top-k template (11/2/4/3/4/2=26); it does not vary across models, so total head-count and per-class counts are constant by construction where configs a-d all ran.",
+    "coverage_note": "gpt2-xl ran only configs a,b (3 classes, 17 heads); pythia-2.8b only config a (2 classes, 13 heads) -- 001 budget deviations, NOT true class absence. Those cells are null (not-run), distinct from 0 (run, no strong head).",
+    "faithfulness_note": "F_C/F_M is only interpretable where F_M>0 (model does IOI). Pythia 70m/410m/2.8b have F_M<0 so their ratios are excluded from fits."
+  }
+}

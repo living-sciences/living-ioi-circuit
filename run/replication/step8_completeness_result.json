@@ -1,0 +1,261 @@
+{
+  "N": 100,
+  "faithfulness": {
+    "F_M": 3.264488697052002,
+    "CIRCUIT": {
+      "F_C": 2.8655009269714355,
+      "abs_F_M_minus_F_C": 0.3989877700805664
+    },
+    "NAIVE": {
+      "F_C": 2.6903276443481445,
+      "abs_F_M_minus_F_C": 0.5741610527038574
+    }
+  },
+  "by_class": {
+    "complete": [
+      {
+        "removed_group": "name mover",
+        "mean_cur_metric_broken_F_C_minus_K": 0.7077274918556213,
+        "mean_cur_metric_cobble_F_M_minus_K": 1.286349892616272,
+        "std_broken": 1.5513980388641357,
+        "std_cobble": 1.5446032285690308,
+        "mean_abs_diff_incompleteness": 0.5786224007606506
+      },
+      {
+        "removed_group": "negative",
+        "mean_cur_metric_broken_F_C_minus_K": 4.461792469024658,
+        "mean_cur_metric_cobble_F_M_minus_K": 5.66649055480957,
+        "std_broken": 1.9878754615783691,
+        "std_cobble": 2.070401906967163,
+        "mean_abs_diff_incompleteness": 1.204698085784912
+      },
+      {
+        "removed_group": "s2 inhibition",
+        "mean_cur_metric_broken_F_C_minus_K": 0.2945714592933655,
+        "mean_cur_metric_cobble_F_M_minus_K": 0.27665817737579346,
+        "std_broken": 1.0552865266799927,
+        "std_cobble": 1.3165644407272339,
+        "mean_abs_diff_incompleteness": 0.01791328191757202
+      },
+      {
+        "removed_group": "induction",
+        "mean_cur_metric_broken_F_C_minus_K": 1.1271731853485107,
+        "mean_cur_metric_cobble_F_M_minus_K": 1.5781625509262085,
+        "std_broken": 1.1291236877441406,
+        "std_cobble": 1.2352409362792969,
+        "mean_abs_diff_incompleteness": 0.45098936557769775
+      },
+      {
+        "removed_group": "duplicate token",
+        "mean_cur_metric_broken_F_C_minus_K": 0.8091916441917419,
+        "mean_cur_metric_cobble_F_M_minus_K": 1.655616283416748,
+        "std_broken": 1.2807317972183228,
+        "std_cobble": 1.3011817932128906,
+        "mean_abs_diff_incompleteness": 0.8464246392250061
+      },
+      {
+        "removed_group": "previous token",
+        "mean_cur_metric_broken_F_C_minus_K": 1.4430445432662964,
+        "mean_cur_metric_cobble_F_M_minus_K": 2.785327196121216,
+        "std_broken": 1.3450578451156616,
+        "std_cobble": 1.4530394077301025,
+        "mean_abs_diff_incompleteness": 1.3422826528549194
+      },
+      {
+        "removed_group": "none",
+        "mean_cur_metric_broken_F_C_minus_K": 2.8655006885528564,
+        "mean_cur_metric_cobble_F_M_minus_K": 3.264488935470581,
+        "std_broken": 1.396406888961792,
+        "std_cobble": 1.3919851779937744,
+        "mean_abs_diff_incompleteness": 0.3989882469177246
+      }
+    ],
+    "complete_max_incompleteness": 1.3422826528549194,
+    "naive": [
+      {
+        "removed_group": "name mover",
+        "mean_cur_metric_broken_F_C_minus_K": 0.32494083046913147,
+        "mean_cur_metric_cobble_F_M_minus_K": 3.3320682048797607,
+        "std_broken": 1.4404488801956177,
+        "std_cobble": 1.5977925062179565,
+        "mean_abs_diff_incompleteness": 3.007127285003662
+      },
+      {
+        "removed_group": "s2 inhibition",
+        "mean_cur_metric_broken_F_C_minus_K": -1.0211670398712158,
+        "mean_cur_metric_cobble_F_M_minus_K": 0.27665817737579346,
+        "std_broken": 1.5258578062057495,
+        "std_cobble": 1.3165644407272339,
+        "mean_abs_diff_incompleteness": 1.2978252172470093
+      },
+      {
+        "removed_group": "induction",
+        "mean_cur_metric_broken_F_C_minus_K": 0.464898943901062,
+        "mean_cur_metric_cobble_F_M_minus_K": 2.3989007472991943,
+        "std_broken": 1.5826594829559326,
+        "std_cobble": 1.2340162992477417,
+        "mean_abs_diff_incompleteness": 1.9340018033981323
+      },
+      {
+        "removed_group": "duplicate token",
+        "mean_cur_metric_broken_F_C_minus_K": 0.08701838552951813,
+        "mean_cur_metric_cobble_F_M_minus_K": 2.5936074256896973,
+        "std_broken": 1.7529380321502686,
+        "std_cobble": 1.2827916145324707,
+        "mean_abs_diff_incompleteness": 2.506588935852051
+      },
+      {
+        "removed_group": "previous token",
+        "mean_cur_metric_broken_F_C_minus_K": 0.8757991790771484,
+        "mean_cur_metric_cobble_F_M_minus_K": 2.785327196121216,
+        "std_broken": 1.7613823413848877,
+        "std_cobble": 1.4530394077301025,
+        "mean_abs_diff_incompleteness": 1.9095280170440674
+      },
+      {
+        "removed_group": "negative",
+        "mean_cur_metric_broken_F_C_minus_K": 2.6903276443481445,
+        "mean_cur_metric_cobble_F_M_minus_K": 3.264488935470581,
+        "std_broken": 1.6969736814498901,
+        "std_cobble": 1.3919851779937744,
+        "mean_abs_diff_incompleteness": 0.5741612911224365
+      },
+      {
+        "removed_group": "none",
+        "mean_cur_metric_broken_F_C_minus_K": 2.6903276443481445,
+        "mean_cur_metric_cobble_F_M_minus_K": 3.264488935470581,
+        "std_broken": 1.6969736814498901,
+        "std_cobble": 1.3919851779937744,
+        "mean_abs_diff_incompleteness": 0.5741612911224365
+      }
+    ],
+    "naive_max_incompleteness": 3.007127285003662
+  },
+  "greedy": {
+    "complete": {
+      "n_points": 88,
+      "baseline_incompleteness": 0.3989877700805664,
+      "max_incompleteness": 3.4433770179748535,
+      "run_finals": [
+        {
+          "ceval": 0.3926166892051697,
+          "meval": 3.775588274002075,
+          "diff": 3.3829715847969055
+        },
+        {
+          "ceval": 1.3111987113952637,
+          "meval": 4.754575729370117,
+          "diff": 3.4433770179748535
+        },
+        {
+          "ceval": 0.3926166892051697,
+          "meval": 3.775588274002075,
+          "diff": 3.3829715847969055
+        },
+        {
+          "ceval": 0.3926166892051697,
+          "meval": 3.775588274002075,
+          "diff": 3.3829715847969055
+        },
+        {
+          "ceval": 1.3111987113952637,
+          "meval": 4.754575729370117,
+          "diff": 3.4433770179748535
+        },
+        {
+          "ceval": 0.17396865785121918,
+          "meval": 3.5484771728515625,
+          "diff": 3.3745085150003433
+        },
+        {
+          "ceval": 1.3111987113952637,
+          "meval": 4.754575729370117,
+          "diff": 3.4433770179748535
+        },
+        {
+          "ceval": -0.6973622441291809,
+          "meval": 2.170774221420288,
+          "diff": 2.868136465549469
+        },
+        {
+          "ceval": 0.3157362937927246,
+          "meval": 2.6890718936920166,
+          "diff": 2.373335599899292
+        },
+        {
+          "ceval": 0.15014252066612244,
+          "meval": 3.521031141281128,
+          "diff": 3.3708886206150055
+        }
+      ]
+    },
+    "naive": {
+      "n_points": 42,
+      "baseline_incompleteness": 0.5741610527038574,
+      "max_incompleteness": 3.2798798382282257,
+      "run_finals": [
+        {
+          "ceval": -0.34641435742378235,
+          "meval": 2.9334654808044434,
+          "diff": 3.2798798382282257
+        },
+        {
+          "ceval": -0.34641435742378235,
+          "meval": 2.9334654808044434,
+          "diff": 3.2798798382282257
+        },
+        {
+          "ceval": -1.0584216117858887,
+          "meval": 1.7365567684173584,
+          "diff": 2.794978380203247
+        },
+        {
+          "ceval": 0.2584056854248047,
+          "meval": 3.5346462726593018,
+          "diff": 3.276240587234497
+        },
+        {
+          "ceval": -0.6194137334823608,
+          "meval": 2.186877727508545,
+          "diff": 2.8062914609909058
+        },
+        {
+          "ceval": -0.4548608958721161,
+          "meval": 2.43739914894104,
+          "diff": 2.892260044813156
+        },
+        {
+          "ceval": -0.46867635846138,
+          "meval": 2.404911756515503,
+          "diff": 2.873588114976883
+        },
+        {
+          "ceval": 0.2584056854248047,
+          "meval": 3.5346462726593018,
+          "diff": 3.276240587234497
+        },
+        {
+          "ceval": -0.14554476737976074,
+          "meval": 2.9009599685668945,
+          "diff": 3.0465047359466553
+        },
+        {
+          "ceval": -1.2958409786224365,
+          "meval": 1.5294557809829712,
+          "diff": 2.8252967596054077
+        }
+      ]
+    }
+  },
+  "random": {
+    "complete": {
+      "n_points": 100,
+      "max_incompleteness": 1.932399570941925
+    },
+    "naive": {
+      "n_points": 100,
+      "max_incompleteness": 2.6845926344394684
+    }
+  },
+  "duration_seconds": 2499.260388612747
+}

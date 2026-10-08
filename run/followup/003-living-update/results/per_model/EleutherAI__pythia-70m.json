@@ -1,0 +1,336 @@
+{
+  "model_id": "EleutherAI/pythia-70m",
+  "configs_requested": "abcd",
+  "n_layers": 6,
+  "n_heads": 8,
+  "positional_embedding_type": "rotary",
+  "n_names_total": 99,
+  "n_names_single_token": 88,
+  "baseline": {
+    "N": 2000,
+    "mean_logit_diff": -0.5723666548728943,
+    "std_logit_diff": 2.0796163082122803,
+    "io_over_s_rate": 0.3779999911785126,
+    "mean_io_prob": 0.007902512326836586
+  },
+  "duration_seconds": 90.73019886016846,
+  "discovery": {
+    "N": 100,
+    "a_h_to_logits": {
+      "default_logit_diff": -0.7035885453224182,
+      "seconds": 5.771076440811157,
+      "name_movers_top": [
+        {
+          "layer": 3,
+          "head": 3,
+          "pct_change": -101.78697204589844
+        },
+        {
+          "layer": 4,
+          "head": 6,
+          "pct_change": -67.91529846191406
+        },
+        {
+          "layer": 5,
+          "head": 7,
+          "pct_change": -5.318030834197998
+        },
+        {
+          "layer": 4,
+          "head": 0,
+          "pct_change": -4.339561462402344
+        },
+        {
+          "layer": 3,
+          "head": 4,
+          "pct_change": -3.927964210510254
+        },
+        {
+          "layer": 3,
+          "head": 2,
+          "pct_change": -3.735177993774414
+        },
+        {
+          "layer": 4,
+          "head": 4,
+          "pct_change": -3.520052194595337
+        },
+        {
+          "layer": 2,
+          "head": 5,
+          "pct_change": -2.426938056945801
+        },
+        {
+          "layer": 2,
+          "head": 3,
+          "pct_change": -1.5962207317352295
+        },
+        {
+          "layer": 3,
+          "head": 7,
+          "pct_change": -1.5949245691299438
+        },
+        {
+          "layer": 3,
+          "head": 5,
+          "pct_change": -1.357298493385315
+        }
+      ],
+      "negNM_top": [
+        {
+          "layer": 4,
+          "head": 1,
+          "pct_change": 61.82640075683594
+        },
+        {
+          "layer": 5,
+          "head": 3,
+          "pct_change": 22.357112884521484
+        }
+      ]
+    },
+    "b_h_to_NMquery": {
+      "default_logit_diff": -0.7035885453224182,
+      "seconds": 5.763005256652832,
+      "nm_query_receivers": [
+        [
+          3,
+          3
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          7
+        ]
+      ],
+      "s_inhibition_top": [
+        {
+          "layer": 2,
+          "head": 7,
+          "pct_change": -2.316206693649292
+        },
+        {
+          "layer": 3,
+          "head": 4,
+          "pct_change": -1.8278067111968994
+        },
+        {
+          "layer": 1,
+          "head": 4,
+          "pct_change": -1.5012041330337524
+        },
+        {
+          "layer": 2,
+          "head": 3,
+          "pct_change": -1.344252347946167
+        }
+      ]
+    },
+    "c_h_to_SInhval": {
+      "default_logit_diff": -0.7035885453224182,
+      "seconds": 5.921507835388184,
+      "value_senders_top": [
+        {
+          "layer": 0,
+          "head": 2,
+          "pct_change": -1.9981435537338257
+        },
+        {
+          "layer": 1,
+          "head": 6,
+          "pct_change": -1.6940667629241943
+        },
+        {
+          "layer": 1,
+          "head": 0,
+          "pct_change": -0.968565821647644
+        },
+        {
+          "layer": 2,
+          "head": 5,
+          "pct_change": -0.9103241562843323
+        },
+        {
+          "layer": 2,
+          "head": 3,
+          "pct_change": -0.5731237530708313
+        },
+        {
+          "layer": 1,
+          "head": 3,
+          "pct_change": -0.5695317983627319
+        },
+        {
+          "layer": 0,
+          "head": 1,
+          "pct_change": -0.5353237986564636
+        }
+      ],
+      "split_note": "earliest-layer -> duplicate token, deeper -> induction (heuristic)"
+    },
+    "d_h_to_INDkey": {
+      "default_logit_diff": -0.7035885453224182,
+      "seconds": 5.793947696685791,
+      "previous_token_top": [
+        {
+          "layer": 0,
+          "head": 1,
+          "pct_change": -0.6080856919288635
+        },
+        {
+          "layer": 1,
+          "head": 2,
+          "pct_change": -0.2858375608921051
+        }
+      ]
+    }
+  },
+  "discovered_circuit": {
+    "name mover": [
+      [
+        3,
+        3
+      ],
+      [
+        4,
+        6
+      ],
+      [
+        5,
+        7
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        4,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        7
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "negative": [
+      [
+        4,
+        1
+      ],
+      [
+        5,
+        3
+      ]
+    ],
+    "s2 inhibition": [
+      [
+        2,
+        7
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "duplicate token": [
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        6
+      ]
+    ],
+    "induction": [
+      [
+        1,
+        0
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "previous token": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ]
+    ]
+  },
+  "discovered_circuit_counts": {
+    "name mover": 11,
+    "negative": 2,
+    "s2 inhibition": 4,
+    "duplicate token": 3,
+    "induction": 4,
+    "previous token": 2
+  },
+  "discovered_circuit_total_heads": 26,
+  "discovered_circuit_num_classes": 6,
+  "faithfulness": {
+    "N": 100,
+    "F_M": -0.7035885453224182,
+    "F_C": -0.7223105430603027,
+    "abs_F_M_minus_F_C": 0.01872199773788452,
+    "F_C_over_F_M": 1.0266092986623385,
+    "n_heads_in_circuit": 21,
+    "classes_included": [
+      "duplicate token",
+      "induction",
+      "name mover",
+      "negative",
+      "previous token",
+      "s2 inhibition"
+    ]
+  },
+  "status": "ok"
+}

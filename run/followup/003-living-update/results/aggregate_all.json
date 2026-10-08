@@ -1,0 +1,331 @@
+{
+  "gpt2": {
+    "meta": {
+      "params": 124,
+      "year": 2019.1,
+      "family": "GPT-2",
+      "tier": 1,
+      "label": "gpt2"
+    },
+    "baseline": {
+      "ld": 3.4951348304748535,
+      "io": 0.9944999814033508,
+      "ioprob": 0.49548354744911194,
+      "N": 2000
+    },
+    "source": "results/per_model/gpt2.json",
+    "faithfulness": {
+      "N": 100,
+      "F_M": 3.502443552017212,
+      "F_C": 3.103823184967041,
+      "abs_F_M_minus_F_C": 0.3986203670501709,
+      "F_C_over_F_M": 0.8861879253355596,
+      "n_heads_in_circuit": 23,
+      "classes_included": [
+        "duplicate token",
+        "induction",
+        "name mover",
+        "negative",
+        "previous token",
+        "s2 inhibition"
+      ]
+    }
+  },
+  "gpt2-medium": {
+    "meta": {
+      "params": 355,
+      "year": 2019.1,
+      "family": "GPT-2",
+      "tier": 1,
+      "label": "gpt2-medium"
+    },
+    "baseline": {
+      "ld": 3.5827198028564453,
+      "io": 1.0,
+      "ioprob": 0.44420182704925537,
+      "N": 2000
+    },
+    "source": "results/per_model/gpt2-medium.json",
+    "faithfulness": {
+      "N": 100,
+      "F_M": 3.39129638671875,
+      "F_C": 1.4058218002319336,
+      "abs_F_M_minus_F_C": 1.9854745864868164,
+      "F_C_over_F_M": 0.4145381706351349,
+      "n_heads_in_circuit": 25,
+      "classes_included": [
+        "duplicate token",
+        "induction",
+        "name mover",
+        "negative",
+        "previous token",
+        "s2 inhibition"
+      ]
+    }
+  },
+  "gpt2-large": {
+    "meta": {
+      "params": 774,
+      "year": 2019.1,
+      "family": "GPT-2",
+      "tier": 1,
+      "label": "gpt2-large"
+    },
+    "baseline": {
+      "ld": 4.481138229370117,
+      "io": 0.9994999766349792,
+      "ioprob": 0.4329536557197571,
+      "N": 2000
+    },
+    "source": "results/per_model/gpt2-large.json",
+    "faithfulness": {
+      "N": 30,
+      "F_M": 4.435103416442871,
+      "F_C": 0.5089275240898132,
+      "abs_F_M_minus_F_C": 3.926175892353058,
+      "F_C_over_F_M": 0.1147498663059346,
+      "n_heads_in_circuit": 25,
+      "classes_included": [
+        "duplicate token",
+        "induction",
+        "name mover",
+        "negative",
+        "previous token",
+        "s2 inhibition"
+      ]
+    }
+  },
+  "gpt2-xl": {
+    "meta": {
+      "params": 1558,
+      "year": 2019.1,
+      "family": "GPT-2",
+      "tier": 1,
+      "label": "gpt2-xl"
+    },
+    "baseline": {
+      "ld": 3.788496494293213,
+      "io": 0.9990000128746033,
+      "ioprob": 0.3904419243335724,
+      "N": 2000
+    },
+    "source": "results/per_model/gpt2-xl.json",
+    "faithfulness": {
+      "N": 30,
+      "F_M": 3.9403693675994873,
+      "F_C": 1.1197725534439087,
+      "abs_F_M_minus_F_C": 2.8205968141555786,
+      "F_C_over_F_M": 0.28417959053571806,
+      "n_heads_in_circuit": 15,
+      "classes_included": [
+        "name mover",
+        "negative",
+        "s2 inhibition"
+      ]
+    }
+  },
+  "EleutherAI/pythia-70m": {
+    "meta": {
+      "params": 70,
+      "year": 2023.3,
+      "family": "Pythia",
+      "tier": 1,
+      "label": "pythia-70m"
+    },
+    "baseline": {
+      "ld": -0.5723666548728943,
+      "io": 0.3779999911785126,
+      "ioprob": 0.007902512326836586,
+      "N": 2000
+    },
+    "source": "results/per_model/EleutherAI__pythia-70m.json",
+    "faithfulness": {
+      "N": 100,
+      "F_M": -0.7035885453224182,
+      "F_C": -0.7223105430603027,
+      "abs_F_M_minus_F_C": 0.01872199773788452,
+      "F_C_over_F_M": 1.0266092986623385,
+      "n_heads_in_circuit": 21,
+      "classes_included": [
+        "duplicate token",
+        "induction",
+        "name mover",
+        "negative",
+        "previous token",
+        "s2 inhibition"
+      ]
+    }
+  },
+  "EleutherAI/pythia-410m": {
+    "meta": {
+      "params": 410,
+      "year": 2023.3,
+      "family": "Pythia",
+      "tier": 1,
+      "label": "pythia-410m"
+    },
+    "baseline": {
+      "ld": -0.37963300943374634,
+      "io": 0.39649999141693115,
+      "ioprob": 0.02235814929008484,
+      "N": 2000
+    },
+    "source": "results/per_model/EleutherAI__pythia-410m.json",
+    "faithfulness": {
+      "N": 100,
+      "F_M": -0.30428481101989746,
+      "F_C": -0.6640112400054932,
+      "abs_F_M_minus_F_C": 0.3597264289855957,
+      "F_C_over_F_M": 2.1822030412226945,
+      "n_heads_in_circuit": 26,
+      "classes_included": [
+        "duplicate token",
+        "induction",
+        "name mover",
+        "negative",
+        "previous token",
+        "s2 inhibition"
+      ]
+    }
+  },
+  "EleutherAI/pythia-1.4b": {
+    "meta": {
+      "params": 1414,
+      "year": 2023.3,
+      "family": "Pythia",
+      "tier": 1,
+      "label": "pythia-1.4b"
+    },
+    "baseline": {
+      "ld": 0.8518413305282593,
+      "io": 0.7160000205039978,
+      "ioprob": 0.03167733922600746,
+      "N": 2000
+    },
+    "source": "results/per_model/EleutherAI__pythia-1.4b.json",
+    "faithfulness": {
+      "N": 50,
+      "F_M": 0.6881384253501892,
+      "F_C": 0.6032582521438599,
+      "abs_F_M_minus_F_C": 0.08488017320632935,
+      "F_C_over_F_M": 0.876652472701064,
+      "n_heads_in_circuit": 25,
+      "classes_included": [
+        "duplicate token",
+        "induction",
+        "name mover",
+        "negative",
+        "previous token",
+        "s2 inhibition"
+      ]
+    }
+  },
+  "EleutherAI/pythia-2.8b": {
+    "meta": {
+      "params": 2775,
+      "year": 2023.3,
+      "family": "Pythia",
+      "tier": 1,
+      "label": "pythia-2.8b"
+    },
+    "baseline": {
+      "ld": -0.3360561728477478,
+      "io": 0.4065000116825104,
+      "ioprob": 0.035866085439920425,
+      "N": 2000
+    },
+    "source": "results/per_model/EleutherAI__pythia-2.8b.json",
+    "faithfulness": {
+      "N": 30,
+      "F_M": -0.5742672681808472,
+      "F_C": -1.3060863018035889,
+      "abs_F_M_minus_F_C": 0.7318190336227417,
+      "F_C_over_F_M": 2.274352682403411,
+      "n_heads_in_circuit": 13,
+      "classes_included": [
+        "name mover",
+        "negative"
+      ]
+    }
+  },
+  "Qwen/Qwen2.5-0.5B": {
+    "meta": {
+      "params": 494,
+      "year": 2024.7,
+      "family": "modern-2024",
+      "tier": 2,
+      "label": "Qwen2.5-0.5B"
+    },
+    "baseline": {
+      "ld": 5.063583765029907,
+      "io": 1.0,
+      "ioprob": 0.454853871781379,
+      "N": 200
+    },
+    "source": "results/per_model/tier2_Qwen__Qwen2.5-0.5B.json"
+  },
+  "HuggingFaceTB/SmolLM2-1.7B": {
+    "meta": {
+      "params": 1711,
+      "year": 2024.9,
+      "family": "modern-2024",
+      "tier": 2,
+      "label": "SmolLM2-1.7B"
+    },
+    "baseline": {
+      "ld": 4.171790307218378,
+      "io": 0.9924242424242424,
+      "ioprob": 0.1964622685777475,
+      "N": 132
+    },
+    "source": "results/per_model/tier2_HuggingFaceTB__SmolLM2-1.7B.json"
+  },
+  "Qwen/Qwen3.5-9B-Base": {
+    "meta": {
+      "params": 9000,
+      "year": 2026.2,
+      "family": "2026",
+      "tier": 2,
+      "label": "Qwen3.5-9B-Base"
+    },
+    "baseline": {
+      "ld": 5.4640625,
+      "io": 0.99,
+      "ioprob": 0.34923530868953095,
+      "N": 200
+    },
+    "source": "results/per_model/tier2_Qwen__Qwen3.5-9B-Base.json"
+  },
+  "Qwen/Qwen3.5-9B": {
+    "meta": {
+      "params": 9000,
+      "year": 2026.2,
+      "family": "2026",
+      "tier": 2,
+      "label": "Qwen3.5-9B (instruct)"
+    },
+    "baseline": {
+      "ld": 5.83953125,
+      "io": 0.995,
+      "ioprob": 0.3771559642243665,
+      "N": 200
+    },
+    "source": "results/per_model/tier2_Qwen__Qwen3.5-9B.json"
+  },
+  "google/gemma-4-12B": {
+    "meta": {
+      "params": 12000,
+      "year": 2026.6,
+      "family": "2026",
+      "tier": 2,
+      "label": "gemma-4-12B"
+    },
+    "baseline": {
+      "ld": 5.711875,
+      "io": 1.0,
+      "ioprob": 0.378133031851612,
+      "N": 200
+    },
+    "source": "results/per_model/tier2_google__gemma-4-12B.json"
+  }
+}

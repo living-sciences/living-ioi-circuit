@@ -1,0 +1,111 @@
+{
+  "N": 100,
+  "baseline_logit_diff": 3.264488697052002,
+  "post_NM_knockout_logit_diff": 3.33206844329834,
+  "relative_drop_pct": -2.07014799118042,
+  "top10_direct_effect_baseline": [
+    {
+      "layer": 9,
+      "head": 9,
+      "effect": -2.3027641773223877
+    },
+    {
+      "layer": 10,
+      "head": 7,
+      "effect": 1.3971595764160156
+    },
+    {
+      "layer": 9,
+      "head": 6,
+      "effect": -0.9403910636901855
+    },
+    {
+      "layer": 11,
+      "head": 10,
+      "effect": 0.8343162536621094
+    },
+    {
+      "layer": 10,
+      "head": 0,
+      "effect": -0.7253961563110352
+    },
+    {
+      "layer": 10,
+      "head": 10,
+      "effect": -0.5022518634796143
+    },
+    {
+      "layer": 10,
+      "head": 6,
+      "effect": -0.27242422103881836
+    },
+    {
+      "layer": 7,
+      "head": 9,
+      "effect": -0.25414586067199707
+    },
+    {
+      "layer": 8,
+      "head": 10,
+      "effect": -0.25246667861938477
+    },
+    {
+      "layer": 11,
+      "head": 2,
+      "effect": 0.2441701889038086
+    }
+  ],
+  "top10_direct_effect_NM_knocked_out": [
+    {
+      "layer": 10,
+      "head": 10,
+      "effect": -1.0333836078643799
+    },
+    {
+      "layer": 11,
+      "head": 10,
+      "effect": 0.8370885848999023
+    },
+    {
+      "layer": 10,
+      "head": 2,
+      "effect": -0.5680770874023438
+    },
+    {
+      "layer": 10,
+      "head": 6,
+      "effect": -0.5345938205718994
+    },
+    {
+      "layer": 11,
+      "head": 2,
+      "effect": -0.40633559226989746
+    },
+    {
+      "layer": 10,
+      "head": 1,
+      "effect": -0.28289222717285156
+    },
+    {
+      "layer": 7,
+      "head": 9,
+      "effect": -0.2679760456085205
+    },
+    {
+      "layer": 8,
+      "head": 10,
+      "effect": -0.25457215309143066
+    },
+    {
+      "layer": 8,
+      "head": 6,
+      "effect": -0.22051429748535156
+    },
+    {
+      "layer": 10,
+      "head": 7,
+      "effect": -0.21749639511108398
+    }
+  ],
+  "duration_seconds": 112.34243583679199
+}

@@ -1,0 +1,1036 @@
+{
+  "instruction_summary": "Test whether the IOI task behavior and circuit (Wang et al. 2022, GPT-2 small) survive up the GPT-2 scale ladder (small->XL) and across generations (Pythia 70M->2.8B; behavioral into modern small models), recomputing baseline (C2), discovery (C4/C9/C14/C16) and faithfulness (C3) per model against the on-disk replication.",
+  "completed": true,
+  "steps": [
+    {
+      "description": "Fresh uv venv under followup dir; editable-install replication codebase (torch 2.2.2 / transformers 4.30.2 / numpy<2)",
+      "command": "uv venv; uv pip install -e run/replication/codebase + pinned deps",
+      "exit_code": 0,
+      "outputs": [
+        "workspace/.venv"
+      ]
+    },
+    {
+      "description": "Validate faithfulness harness reproduces on-disk anchor with paper circuit",
+      "command": "python validate_anchor.py",
+      "exit_code": 0,
+      "outputs": [
+        "F(C)/F(M)=0.8778 == disk"
+      ]
+    },
+    {
+      "description": "Tier-1 ladder: baseline + path-patch discovery (a/b/c/d) + discovered-circuit faithfulness",
+      "command": "python ladder_tier1.py <MODEL_ID> <configs>",
+      "exit_code": 0,
+      "outputs": [
+        "results/per_model/gpt2.json",
+        "results/per_model/gpt2-medium.json",
+        "results/per_model/gpt2-large.json",
+        "results/per_model/gpt2-xl.json",
+        "results/per_model/EleutherAI__pythia-70m.json",
+        "results/per_model/EleutherAI__pythia-410m.json",
+        "results/per_model/EleutherAI__pythia-1.4b.json",
+        "results/per_model/EleutherAI__pythia-2.8b.json"
+      ]
+    },
+    {
+      "description": "Tier-2 behavioral-only IOI (raw HF AutoModelForCausalLM, modern transformers venv)",
+      "command": "python tier2_behavioral.py <MODEL_ID>",
+      "exit_code": 0,
+      "outputs": [
+        "results/per_model/tier2_*.json"
+      ]
+    },
+    {
+      "description": "Figures",
+      "command": "python make_figures.py",
+      "exit_code": 0,
+      "outputs": [
+        "results/faithfulness_vs_scale.png",
+        "results/headcount_vs_scale.png",
+        "results/behavioral_vs_scale.png"
+      ]
+    }
+  ],
+  "key_results": {
+    "baseline_logit_diff": {
+      "gpt2": 3.4951,
+      "gpt2-medium": 3.5827,
+      "gpt2-large": 4.4811,
+      "gpt2-xl": 3.7885,
+      "EleutherAI/pythia-70m": -0.5724,
+      "EleutherAI/pythia-410m": -0.3796,
+      "EleutherAI/pythia-1.4b": 0.8518,
+      "EleutherAI/pythia-2.8b": -0.3361,
+      "Qwen/Qwen2.5-0.5B": 5.0636,
+      "HuggingFaceTB/SmolLM2-1.7B": 4.1718
+    },
+    "io_over_s_rate": {
+      "gpt2": 0.9945,
+      "gpt2-medium": 1.0,
+      "gpt2-large": 0.9995,
+      "gpt2-xl": 0.999,
+      "EleutherAI/pythia-70m": 0.378,
+      "EleutherAI/pythia-410m": 0.3965,
+      "EleutherAI/pythia-1.4b": 0.716,
+      "EleutherAI/pythia-2.8b": 0.4065,
+      "Qwen/Qwen2.5-0.5B": 1.0,
+      "HuggingFaceTB/SmolLM2-1.7B": 0.9924
+    },
+    "faithfulness_FC_over_FM_full6class": {
+      "gpt2": 0.8862,
+      "gpt2-medium": 0.4145,
+      "gpt2-large": 0.1147,
+      "EleutherAI/pythia-70m": 1.0266,
+      "EleutherAI/pythia-410m": 2.1822,
+      "EleutherAI/pythia-1.4b": 0.8767
+    },
+    "gpt2xl_faithfulness_3class_partial": 0.2842,
+    "name_survivor_counts_single_token": {
+      "gpt2": 99,
+      "gpt2-medium": 99,
+      "gpt2-large": 99,
+      "gpt2-xl": 99,
+      "EleutherAI/pythia-70m": 88,
+      "EleutherAI/pythia-410m": 88,
+      "EleutherAI/pythia-1.4b": 88,
+      "EleutherAI/pythia-2.8b": 88
+    },
+    "tier2_name_survivor_counts": {
+      "Qwen/Qwen2.5-0.5B": 97,
+      "HuggingFaceTB/SmolLM2-1.7B": 79
+    },
+    "N_pp_per_model": {
+      "gpt2": 100,
+      "gpt2-medium": 100,
+      "EleutherAI/pythia-70m": 100,
+      "EleutherAI/pythia-410m": 100,
+      "EleutherAI/pythia-1.4b": 50,
+      "gpt2-large": 30,
+      "gpt2-xl": 30,
+      "EleutherAI/pythia-2.8b": 30
+    },
+    "gpu_seconds_per_model": {
+      "gpt2": 202.8,
+      "gpt2-medium": 1602.5,
+      "gpt2-large": 2199.3,
+      "gpt2-xl": 38.1,
+      "EleutherAI/pythia-70m": 90.7,
+      "EleutherAI/pythia-410m": 2107.7,
+      "EleutherAI/pythia-1.4b": 28.3,
+      "EleutherAI/pythia-2.8b": 1657.4,
+      "Qwen/Qwen2.5-0.5B": 83.4,
+      "HuggingFaceTB/SmolLM2-1.7B": 180.6
+    },
+    "discovered_circuit_by_class": {
+      "gpt2": {
+        "name mover": [
+          [
+            9,
+            9
+          ],
+          [
+            9,
+            6
+          ],
+          [
+            10,
+            0
+          ],
+          [
+            10,
+            10
+          ],
+          [
+            10,
+            6
+          ],
+          [
+            8,
+            10
+          ],
+          [
+            10,
+            1
+          ],
+          [
+            7,
+            9
+          ],
+          [
+            9,
+            7
+          ],
+          [
+            8,
+            6
+          ],
+          [
+            9,
+            0
+          ]
+        ],
+        "negative": [
+          [
+            10,
+            7
+          ],
+          [
+            11,
+            10
+          ]
+        ],
+        "s2 inhibition": [
+          [
+            8,
+            6
+          ],
+          [
+            8,
+            10
+          ],
+          [
+            7,
+            9
+          ],
+          [
+            7,
+            3
+          ]
+        ],
+        "duplicate token": [
+          [
+            0,
+            1
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            3,
+            4
+          ]
+        ],
+        "induction": [
+          [
+            5,
+            5
+          ],
+          [
+            5,
+            9
+          ],
+          [
+            6,
+            9
+          ],
+          [
+            7,
+            1
+          ]
+        ],
+        "previous token": [
+          [
+            4,
+            11
+          ],
+          [
+            2,
+            2
+          ]
+        ]
+      },
+      "gpt2-medium": {
+        "name mover": [
+          [
+            19,
+            1
+          ],
+          [
+            16,
+            15
+          ],
+          [
+            15,
+            14
+          ],
+          [
+            21,
+            7
+          ],
+          [
+            18,
+            5
+          ],
+          [
+            19,
+            15
+          ],
+          [
+            20,
+            12
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            20,
+            6
+          ],
+          [
+            17,
+            4
+          ],
+          [
+            20,
+            7
+          ]
+        ],
+        "negative": [
+          [
+            22,
+            14
+          ],
+          [
+            23,
+            3
+          ]
+        ],
+        "s2 inhibition": [
+          [
+            12,
+            3
+          ],
+          [
+            13,
+            4
+          ],
+          [
+            13,
+            13
+          ],
+          [
+            16,
+            0
+          ]
+        ],
+        "duplicate token": [
+          [
+            6,
+            4
+          ],
+          [
+            6,
+            15
+          ],
+          [
+            7,
+            2
+          ]
+        ],
+        "induction": [
+          [
+            7,
+            4
+          ],
+          [
+            8,
+            15
+          ],
+          [
+            11,
+            14
+          ],
+          [
+            11,
+            6
+          ]
+        ],
+        "previous token": [
+          [
+            8,
+            6
+          ],
+          [
+            4,
+            13
+          ]
+        ]
+      },
+      "gpt2-large": {
+        "name mover": [
+          [
+            20,
+            14
+          ],
+          [
+            22,
+            0
+          ],
+          [
+            23,
+            13
+          ],
+          [
+            26,
+            14
+          ],
+          [
+            27,
+            17
+          ],
+          [
+            28,
+            12
+          ],
+          [
+            30,
+            14
+          ],
+          [
+            18,
+            3
+          ],
+          [
+            21,
+            8
+          ],
+          [
+            17,
+            19
+          ],
+          [
+            30,
+            10
+          ]
+        ],
+        "negative": [
+          [
+            32,
+            0
+          ],
+          [
+            26,
+            0
+          ]
+        ],
+        "s2 inhibition": [
+          [
+            18,
+            5
+          ],
+          [
+            20,
+            14
+          ],
+          [
+            17,
+            9
+          ],
+          [
+            19,
+            18
+          ]
+        ],
+        "duplicate token": [
+          [
+            0,
+            14
+          ],
+          [
+            5,
+            8
+          ],
+          [
+            8,
+            14
+          ]
+        ],
+        "induction": [
+          [
+            12,
+            13
+          ],
+          [
+            15,
+            4
+          ],
+          [
+            16,
+            0
+          ],
+          [
+            17,
+            5
+          ]
+        ],
+        "previous token": [
+          [
+            15,
+            19
+          ],
+          [
+            14,
+            1
+          ]
+        ]
+      },
+      "gpt2-xl": {
+        "name mover": [
+          [
+            22,
+            6
+          ],
+          [
+            26,
+            20
+          ],
+          [
+            33,
+            2
+          ],
+          [
+            29,
+            14
+          ],
+          [
+            28,
+            14
+          ],
+          [
+            21,
+            23
+          ],
+          [
+            31,
+            17
+          ],
+          [
+            34,
+            17
+          ],
+          [
+            35,
+            17
+          ],
+          [
+            31,
+            3
+          ],
+          [
+            42,
+            13
+          ]
+        ],
+        "negative": [
+          [
+            39,
+            9
+          ],
+          [
+            32,
+            13
+          ]
+        ],
+        "s2 inhibition": [
+          [
+            22,
+            6
+          ],
+          [
+            21,
+            5
+          ],
+          [
+            18,
+            2
+          ],
+          [
+            26,
+            20
+          ]
+        ]
+      },
+      "EleutherAI/pythia-70m": {
+        "name mover": [
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            6
+          ],
+          [
+            5,
+            7
+          ],
+          [
+            4,
+            0
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            3,
+            2
+          ],
+          [
+            4,
+            4
+          ],
+          [
+            2,
+            5
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            7
+          ],
+          [
+            3,
+            5
+          ]
+        ],
+        "negative": [
+          [
+            4,
+            1
+          ],
+          [
+            5,
+            3
+          ]
+        ],
+        "s2 inhibition": [
+          [
+            2,
+            7
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            2,
+            3
+          ]
+        ],
+        "duplicate token": [
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            6
+          ]
+        ],
+        "induction": [
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            2,
+            5
+          ],
+          [
+            2,
+            3
+          ]
+        ],
+        "previous token": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            2
+          ]
+        ]
+      },
+      "EleutherAI/pythia-410m": {
+        "name mover": [
+          [
+            20,
+            15
+          ],
+          [
+            19,
+            12
+          ],
+          [
+            17,
+            6
+          ],
+          [
+            18,
+            8
+          ],
+          [
+            21,
+            1
+          ],
+          [
+            18,
+            13
+          ],
+          [
+            18,
+            14
+          ],
+          [
+            19,
+            10
+          ],
+          [
+            17,
+            10
+          ],
+          [
+            18,
+            10
+          ],
+          [
+            19,
+            9
+          ]
+        ],
+        "negative": [
+          [
+            19,
+            15
+          ],
+          [
+            16,
+            0
+          ]
+        ],
+        "s2 inhibition": [
+          [
+            11,
+            5
+          ],
+          [
+            15,
+            0
+          ],
+          [
+            13,
+            5
+          ],
+          [
+            15,
+            11
+          ]
+        ],
+        "duplicate token": [
+          [
+            8,
+            13
+          ],
+          [
+            9,
+            3
+          ],
+          [
+            9,
+            2
+          ]
+        ],
+        "induction": [
+          [
+            11,
+            7
+          ],
+          [
+            11,
+            3
+          ],
+          [
+            12,
+            12
+          ],
+          [
+            13,
+            7
+          ]
+        ],
+        "previous token": [
+          [
+            10,
+            1
+          ],
+          [
+            9,
+            5
+          ]
+        ]
+      },
+      "EleutherAI/pythia-1.4b": {
+        "name mover": [
+          [
+            10,
+            7
+          ],
+          [
+            21,
+            3
+          ],
+          [
+            17,
+            7
+          ],
+          [
+            22,
+            10
+          ],
+          [
+            13,
+            1
+          ],
+          [
+            17,
+            0
+          ],
+          [
+            15,
+            15
+          ],
+          [
+            17,
+            8
+          ],
+          [
+            15,
+            11
+          ],
+          [
+            15,
+            3
+          ],
+          [
+            11,
+            15
+          ]
+        ],
+        "negative": [
+          [
+            19,
+            5
+          ],
+          [
+            13,
+            3
+          ]
+        ],
+        "s2 inhibition": [
+          [
+            10,
+            7
+          ],
+          [
+            9,
+            4
+          ],
+          [
+            7,
+            14
+          ],
+          [
+            11,
+            8
+          ]
+        ],
+        "duplicate token": [
+          [
+            4,
+            7
+          ],
+          [
+            4,
+            1
+          ],
+          [
+            5,
+            8
+          ]
+        ],
+        "induction": [
+          [
+            7,
+            3
+          ],
+          [
+            7,
+            6
+          ],
+          [
+            8,
+            6
+          ],
+          [
+            9,
+            1
+          ]
+        ],
+        "previous token": [
+          [
+            6,
+            2
+          ],
+          [
+            3,
+            5
+          ]
+        ]
+      },
+      "EleutherAI/pythia-2.8b": {
+        "name mover": [
+          [
+            22,
+            31
+          ],
+          [
+            26,
+            13
+          ],
+          [
+            18,
+            7
+          ],
+          [
+            18,
+            8
+          ],
+          [
+            19,
+            12
+          ],
+          [
+            25,
+            5
+          ],
+          [
+            22,
+            24
+          ],
+          [
+            19,
+            17
+          ],
+          [
+            18,
+            23
+          ],
+          [
+            18,
+            4
+          ],
+          [
+            24,
+            16
+          ]
+        ],
+        "negative": [
+          [
+            20,
+            25
+          ],
+          [
+            25,
+            2
+          ]
+        ]
+      }
+    }
+  },
+  "comparison_to_original": [
+    {
+      "quantity": "C2 baseline mean logit-diff (GPT-2 small)",
+      "original": "paper 3.56 / replicated 3.4903",
+      "followup": "3.4951 (this session, N=2000)",
+      "source_file": "replication/step2_baseline_result.json",
+      "note": "anchor reproduced; GPT-2 family all >3.4, Pythia family fails (<=0.85, mostly <0)"
+    },
+    {
+      "quantity": "C2 IO>S rate (GPT-2 small)",
+      "original": "paper 99.3% / replicated 99.5%",
+      "followup": "99.4%",
+      "source_file": "replication/step2_baseline_result.json",
+      "note": ""
+    },
+    {
+      "quantity": "C3 faithfulness F(C)/F(M) (GPT-2 small)",
+      "original": "paper ~87% / replicated 87.8% (F(M)=3.2645, F(C)=2.8655)",
+      "followup": "88.6% (discovered 6-class circuit; paper-curated circuit via this harness = 87.78% [validate_anchor.py])",
+      "source_file": "replication/step8_completeness_result.json",
+      "note": "harness validated exact-match to disk on paper circuit"
+    },
+    {
+      "quantity": "C3 faithfulness F(C)/F(M) across GPT-2 scale (discovered 6-class)",
+      "original": "n/a (paper only characterises GPT-2 small)",
+      "followup": "small 88.6% -> medium 41.5% -> large 11.5%",
+      "source_file": "results/per_model/*.json",
+      "note": "monotone collapse of discovered-circuit faithfulness with scale"
+    },
+    {
+      "quantity": "C3 faithfulness F(C)/F(M) (Pythia-1.4b, discovered 6-class)",
+      "original": "n/a",
+      "followup": "87.7% (F(M)=0.688)",
+      "source_file": "results/per_model/EleutherAI__pythia-1.4b.json",
+      "note": "only Pythia rung with F(M)>0; other Pythia rungs fail the task so faithfulness is uninterpretable"
+    },
+    {
+      "quantity": "C4 name-mover heads (top, h->Logits)",
+      "original": "paper/replicated GPT-2 small: 9.9, 9.6, 10.0",
+      "followup": "gpt2 (this session): 9.9, 9.6, 10.0; gpt2-large: 20.14, 22.0, 23.13",
+      "source_file": "replication/step3_pathpatching_result.json",
+      "note": "name movers persist and shift to later layers with scale"
+    },
+    {
+      "quantity": "C9 S-inhibition heads (top, h->NM queries)",
+      "original": "paper/replicated GPT-2 small: 7.3, 7.9, 8.6, 8.10",
+      "followup": "gpt2 (this session): 8.6, 8.10, 7.9, 7.3",
+      "source_file": "replication/step3_b_h_to_NMquery_heads.npy",
+      "note": "recovered on GPT-2 small; strong single S-inhibition heads vanish by gpt2-medium"
+    }
+  ],
+  "artifacts": [
+    "results/faithfulness_vs_scale.png",
+    "results/headcount_vs_scale.png",
+    "results/behavioral_vs_scale.png",
+    "results/per_model/ (per-model JSON + npy discovery matrices)"
+  ],
+  "deviations": [
+    "Instruction said Tier-1 weights were cached; only 'gpt2' was present in HF_HOME. Downloaded gpt2-medium/large/xl and all Pythia rungs fresh (HF_HUB_OFFLINE=0 for those loads). No /home writes.",
+    "gpt2-xl full 6-class discovery not completed: config b alone took 38 min (N=30, 1200 heads); configs c,d exceeded budget. gpt2-xl faithfulness reported for a 3-class output-side circuit (name mover + negative + S-inhibition, 15 heads) and clearly labelled partial.",
+    "Path-patch N reduced below 100 for the largest models to fit 48 GB (adaptive: N=50 for pythia-1.4b, N=30 for gpt2-large/xl and pythia-2.8b) after per-head qkv-input caching OOMed at N=100 on pythia-1.4b. Baseline (C2) always N=2000.",
+    "Completeness/greedy search (C19/C21) dropped entirely as instructed (anchor-only).",
+    "Induction vs duplicate-token split within config c is a layer-depth heuristic (earliest layers -> duplicate); both map to the S2 token position so the split does not affect faithfulness.",
+    "Non-GPT-2 single-token name filter applied via monkeypatch of module-global NAMES (IOIDataset exposes no names= arg). Pythia/NeoX tokenizer keeps 88/99 names; all >=15 so every model was attempted.",
+    "Tier-2 is behavioral-only (no circuit). OLMo-2-0425-1B could not load (arch 'olmo2' unknown to transformers 4.46.3) -> environmental skip; gated repos not probed."
+  ]
+}

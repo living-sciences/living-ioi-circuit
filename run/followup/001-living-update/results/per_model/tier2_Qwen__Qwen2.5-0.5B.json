@@ -1,0 +1,15 @@
+{
+  "model_id": "Qwen/Qwen2.5-0.5B",
+  "tier": 2,
+  "n_names_in_prompts": 97,
+  "n_names_single_token": 97,
+  "baseline": {
+    "N_scored": 200,
+    "mean_logit_diff": 5.063583765029907,
+    "std_logit_diff": 1.5751660962291383,
+    "io_over_s_rate": 1.0,
+    "mean_io_prob": 0.454853871781379
+  },
+  "status": "ok",
+  "duration_seconds": 83.3586699962616
+}

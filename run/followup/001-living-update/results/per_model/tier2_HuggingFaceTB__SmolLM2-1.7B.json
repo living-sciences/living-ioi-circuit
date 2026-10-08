@@ -1,0 +1,15 @@
+{
+  "model_id": "HuggingFaceTB/SmolLM2-1.7B",
+  "tier": 2,
+  "n_names_in_prompts": 97,
+  "n_names_single_token": 79,
+  "baseline": {
+    "N_scored": 132,
+    "mean_logit_diff": 4.171790307218378,
+    "std_logit_diff": 1.689534850730519,
+    "io_over_s_rate": 0.9924242424242424,
+    "mean_io_prob": 0.1964622685777475
+  },
+  "status": "ok",
+  "duration_seconds": 180.60336661338806
+}

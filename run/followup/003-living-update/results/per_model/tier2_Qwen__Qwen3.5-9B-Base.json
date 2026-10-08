@@ -1,0 +1,18 @@
+{
+  "model_id": "Qwen/Qwen3.5-9B-Base",
+  "model_path": "/net/projects2/chai-lab/shared_models/hub/models--Qwen--Qwen3.5-9B-Base/snapshots/2d021f1887f1fe402bf2c53ed69d7f0fc4709ec9",
+  "tier": 2,
+  "arch": "Qwen3_5ForConditionalGeneration",
+  "loader": "AutoModelForImageTextToText",
+  "n_names_in_prompts": 97,
+  "n_names_single_token": 97,
+  "baseline": {
+    "N_scored": 200,
+    "mean_logit_diff": 5.4640625,
+    "std_logit_diff": 1.403461645305546,
+    "io_over_s_rate": 0.99,
+    "mean_io_prob": 0.34923530868953095
+  },
+  "status": "ok",
+  "duration_seconds": 19.8047354221344
+}

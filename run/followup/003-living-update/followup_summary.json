@@ -1,0 +1,110 @@
+{
+  "instruction_summary": "2026 model-refresh tick extending the 001 living-update ladder: add the newest 2026 flagships (primarily Qwen3.5-9B, plus gemma-4-12B) as BEHAVIORAL-only IOI points via raw transformers (AutoModelForImageTextToText), reuse ALL prior per-model results, re-aggregate old+new, and extend the over-time figure to 2026 — reporting whether the paper's IOI finding still holds in the newest models.",
+  "completed": true,
+  "steps": [
+    {
+      "description": "Reused prior 001 living-update: copied its results/per_model/* (8 Tier-1 + 2 Tier-2 JSONs) and its workspace scripts (tier2_behavioral.py, make_figures.py, build_summary.py, ioi_prompts.json) into this study; treated every 001 model as DONE (no recompute).",
+      "command": "cp -rn run/followup/001-living-update/results/per_model/* results/per_model/ ; cp 001/workspace/{tier2_behavioral.py,data/ioi_prompts.json,...} workspace/",
+      "exit_code": 0,
+      "outputs": ["results/per_model/ (10 reused JSONs)", "workspace/tier2_behavioral.py", "workspace/data/ioi_prompts.json"]
+    },
+    {
+      "description": "Fresh uv venv (.venv-2026) with torch 2.14.0 + transformers 5.17.0 (the 001 Tier-2 venv transformers 4.46.3 does NOT know model_type qwen3_5; 5.17.0 registers qwen3_5 and gemma4_unified).",
+      "command": "uv venv .venv-2026 --python 3.11 && uv pip install torch transformers accelerate safetensors matplotlib",
+      "exit_code": 0,
+      "outputs": ["workspace/.venv-2026 (transformers 5.17.0)"]
+    },
+    {
+      "description": "Smoke-test Qwen3.5-9B-Base: load via AutoModelForImageTextToText (arch Qwen3_5ForConditionalGeneration), one forward -> logits [1,T,248320], one activation read output_hidden_states len=33 (=32 layers+1); text decoder is m.model.language_model (Qwen3_5TextModel, 32 layers) NOT m.language_model as the instruction sketch said.",
+      "command": "python (inline smoke test) — load + m(**ids, output_hidden_states=True)",
+      "exit_code": 0,
+      "outputs": ["confirmed hookable text decoder m.model.language_model.layers[L]; IO logit > S logit on the example prompt"]
+    },
+    {
+      "description": "Behavioral IOI (Tier-2 analog of C2) for Qwen3.5-9B-Base via transformers, reusing the same 200 IOI prompts + single-token-name filter + END-scoring as 001.",
+      "command": "python tier2_behavioral_2026.py <Qwen3.5-9B-Base path> Qwen/Qwen3.5-9B-Base",
+      "exit_code": 0,
+      "outputs": ["results/per_model/tier2_Qwen__Qwen3.5-9B-Base.json"]
+    },
+    {
+      "description": "Behavioral IOI for Qwen3.5-9B (instruct) — secondary 2026 point.",
+      "command": "python tier2_behavioral_2026.py <Qwen3.5-9B path> Qwen/Qwen3.5-9B",
+      "exit_code": 0,
+      "outputs": ["results/per_model/tier2_Qwen__Qwen3.5-9B.json"]
+    },
+    {
+      "description": "Behavioral IOI for gemma-4-12B (base) — second 2026 model; verified downloaded (23GB) + hookable (arch Gemma4UnifiedForConditionalGeneration, 48 layers).",
+      "command": "python tier2_behavioral_2026.py <gemma-4-12B path> google/gemma-4-12B",
+      "exit_code": 0,
+      "outputs": ["results/per_model/tier2_google__gemma-4-12B.json"]
+    },
+    {
+      "description": "Re-aggregate ALL (8 Tier-1 + 5 Tier-2 = old+new) from disk and extend the over-time figure to the 2026 point; regenerate behavioral-vs-scale and the Tier-1 faithfulness ladder for self-containedness.",
+      "command": "python aggregate_and_figures.py",
+      "exit_code": 0,
+      "outputs": ["results/behavioral_over_time.png", "results/behavioral_vs_scale.png", "results/faithfulness_vs_scale.png", "results/aggregate_all.json"]
+    }
+  ],
+  "key_results": {
+    "new_2026_behavioral": {
+      "Qwen/Qwen3.5-9B-Base":  {"mean_logit_diff": 5.4641, "io_over_s_rate": 0.990, "mean_io_prob": 0.3492, "N_scored": 200, "single_token_names": "97/97", "seconds": 19.8},
+      "Qwen/Qwen3.5-9B":       {"mean_logit_diff": 5.8395, "io_over_s_rate": 0.995, "mean_io_prob": 0.3772, "N_scored": 200, "single_token_names": "97/97", "seconds": 155.4, "note": "instruct"},
+      "google/gemma-4-12B":    {"mean_logit_diff": 5.7119, "io_over_s_rate": 1.000, "mean_io_prob": 0.3781, "N_scored": 200, "single_token_names": "97/97", "seconds": 148.2, "note": "base"}
+    },
+    "headline": "The paper's IOI finding STILL HOLDS in the newest 2026 models — behaviorally even stronger than GPT-2. Qwen3.5-9B-Base logit-diff +5.46 (IO>S 99.0%), Qwen3.5-9B instruct +5.84 (99.5%), gemma-4-12B +5.71 (100%); all >> the GPT-2-small replication anchor +3.49.",
+    "ladder_baseline_logit_diff_all": {
+      "gpt2": 3.4951, "gpt2-medium": 3.5827, "gpt2-large": 4.4811, "gpt2-xl": 3.7885,
+      "EleutherAI/pythia-70m": -0.5724, "EleutherAI/pythia-410m": -0.3796, "EleutherAI/pythia-1.4b": 0.8518, "EleutherAI/pythia-2.8b": -0.3361,
+      "Qwen/Qwen2.5-0.5B": 5.0636, "HuggingFaceTB/SmolLM2-1.7B": 4.1718,
+      "Qwen/Qwen3.5-9B-Base": 5.4641, "Qwen/Qwen3.5-9B": 5.8395, "google/gemma-4-12B": 5.7119
+    },
+    "loader_recipe": "AutoModelForImageTextToText.from_pretrained(PATH, dtype=bfloat16, device_map='auto'); text logits = m(input_ids=ids).logits; text decoder = m.model.language_model (32 layers Qwen3.5 / 48 layers gemma-4).",
+    "circuit_discovery": "NOT available for these multimodal architectures (easy_transformer fork + TransformerLens cannot load qwen3_5/gemma4_unified; nnsight cannot wrap them). Tier-2 BEHAVIORAL-only as instructed — no faithfulness / circuit for the 2026 models."
+  },
+  "comparison_to_original": [
+    {
+      "quantity": "IOI baseline mean logit-diff (IO-S)",
+      "original": "GPT-2 small replication +3.49 (paper 3.56)",
+      "followup": "Qwen3.5-9B-Base +5.46 / instruct +5.84 / gemma-4-12B +5.71 (this session, N=200)",
+      "source_file": "run/replication/step2_baseline_result.json (original 3.49); results/per_model/tier2_Qwen__Qwen3.5-9B-Base.json (new)",
+      "note": "IOI behaviour holds and STRENGTHENS in the newest 2026 models; ~1.6x the GPT-2-small anchor"
+    },
+    {
+      "quantity": "IO>S rate",
+      "original": "GPT-2 small replication 99.5% (paper 99.3%)",
+      "followup": "Qwen3.5-9B-Base 99.0% / instruct 99.5% / gemma-4-12B 100.0%",
+      "source_file": "run/replication/step2_baseline_result.json; results/per_model/tier2_*.json",
+      "note": "near-perfect IO>S preference preserved into 2026, matching the GPT-2 anchor"
+    },
+    {
+      "quantity": "IOI baseline logit-diff — 2026 vs 2024 modern Tier-2 (both behavioral)",
+      "original": "Qwen2.5-0.5B +5.06 / SmolLM2-1.7B +4.17 (001 living-update, this-session-of-001 values)",
+      "followup": "Qwen3.5-9B-Base +5.46 / gemma-4-12B +5.71",
+      "source_file": "results/per_model/tier2_Qwen__Qwen2.5-0.5B.json (reused from 001)",
+      "note": "the newest generation stays at the top of the range set by the 2024 modern models"
+    },
+    {
+      "quantity": "single-token-name survivors (of 97 prompt names)",
+      "original": "GPT-2 99/99 (identical tokenizer); Qwen2.5 97/97 (001)",
+      "followup": "Qwen3.5-9B 97/97; gemma-4-12B 97/97",
+      "source_file": "results/per_model/tier2_*.json",
+      "note": "all 97 names single-token -> all 200 prompts scored (>=15, so attempted, not held out)"
+    }
+  ],
+  "artifacts": [
+    "results/behavioral_over_time.png",
+    "results/behavioral_vs_scale.png",
+    "results/faithfulness_vs_scale.png",
+    "results/aggregate_all.json",
+    "results/per_model/tier2_Qwen__Qwen3.5-9B-Base.json",
+    "results/per_model/tier2_Qwen__Qwen3.5-9B.json",
+    "results/per_model/tier2_google__gemma-4-12B.json"
+  ],
+  "deviations": [
+    "The 2026 flagships are BEHAVIORAL-only (as the instruction mandates): the easy_transformer fork / TransformerLens cannot load qwen3_5 or gemma4_unified, and nnsight cannot wrap them, so no circuit discovery / faithfulness (C3/C4/C9/...) is computed for them. This is the same limitation the 001 Tier-2 models had, extended to 2026.",
+    "The instruction's loader sketch used `dec = m.language_model`; in transformers 5.17.0 the text decoder is at `m.model.language_model` (Qwen3_5TextModel, 32 layers) — attribute path adjusted after inspecting the module tree. Forward/logits (`m(input_ids=ids).logits`) work exactly as sketched.",
+    "Needed a newer transformers than the reused 001 Tier-2 venv (4.46.3, which lacks qwen3_5): built a fresh .venv-2026 with transformers 5.17.0 / torch 2.14.0. All weights loaded OFFLINE from the local cache; no /home writes.",
+    "gemma-4-12B WAS present (23GB, fully downloaded) and hookable, so it is included as a second 2026 point (base, matching the ladder's base-model convention). Both Qwen3.5-9B base and instruct were run.",
+    "Over-time x-axis uses APPROXIMATE release years (GPT-2 2019, Pythia 2023, Qwen2.5/SmolLM2 2024, Qwen3.5 2026.2 per instruction, gemma-4 ~2026.6); used only for figure ordering, not for any quantitative claim."
+  ]
+}

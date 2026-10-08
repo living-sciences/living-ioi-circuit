@@ -1,0 +1,75 @@
+{
+  "instruction_summary": "Using only 001-living-update's on-disk per-model measurements (no new GPU), analyze how IOI-circuit structure scales: build class-persistence matrices, fit faithfulness / head-count / per-class-count vs log-params (with R2), contrast GPT-2 vs Pythia generations, fold Tier-2 into behavioral survival only, and restate the paper's claim.",
+  "completed": true,
+  "steps": [
+    {
+      "description": "Read 001 artifacts (followup_summary.json + results/per_model/*.json) and replication anchors (step2/step8); confirmed 001's discovered circuit is a fixed 26-head/6-class template so per-class counts are constant by construction.",
+      "command": "python3 (inspect per_model JSONs + anchors)",
+      "exit_code": 0,
+      "outputs": ["(read-only)"]
+    },
+    {
+      "description": "Build both class-persistence matrices (literal template + strong-head |Δlogit-diff|>=0.2), fit all requested scale relations on log10(params) with R2/p/n, compute generation contrast and Tier-2 behavioral rung. Strong-head recomputation reproduces 001's result-card head-counts exactly (validation).",
+      "command": "python workspace/analyze_scaling.py",
+      "exit_code": 0,
+      "outputs": ["results/fit_results.json"]
+    },
+    {
+      "description": "Render 3 canvas figures: faithfulness-vs-scale (with GPT-2 fit + anchor), behavioral-logit-diff-vs-scale (GPT-2 vs Pythia vs Tier-2), class-persistence heatmap (strong heads, n/r cells greyed).",
+      "command": "python workspace/make_figures.py",
+      "exit_code": 0,
+      "outputs": [
+        "results/fig1_faithfulness_vs_scale.png",
+        "results/fig2_behavioral_vs_scale.png",
+        "results/fig3_class_persistence_heatmap.png"
+      ]
+    }
+  ],
+  "key_results": {
+    "faithfulness_vs_logparams_gpt2_FMpos": {"slope_per_decade": -0.609, "r2": 0.752, "p": 0.133, "n": 4, "verdict": "falls with scale, not significant; overturns flat-faithfulness prior within GPT-2"},
+    "faithfulness_gpt2_ladder": {"gpt2-small_anchor": 0.878, "gpt2-small_discovered": 0.886, "gpt2-medium": 0.415, "gpt2-large": 0.115, "gpt2-xl_3class_partial": 0.284},
+    "faithfulness_pythia-1.4b": {"value": 0.877, "note": "only Pythia rung with F(M)>0; ~= GPT-2-small anchor 0.878"},
+    "headcount_template_vs_logparams": {"slope_per_decade": 0.0, "r2": 0.0, "note": "DEGENERATE: 001 fixed circuit at 26 heads by template; head-count scaling untestable from 001 artifacts"},
+    "namemover_strong_vs_logparams": {"slope_per_decade": -2.45, "r2": 0.103, "n": 8, "note": "weak downward, noisy"},
+    "sinhib_strong_vs_logparams": {"slope_per_decade": -1.05, "r2": 0.224, "n": 7, "note": "downward, noisy"},
+    "logitdiff_vs_logparams_all_incl_tier2": {"slope_per_decade": 0.501, "r2": 0.013, "n": 10, "note": "no size trend; generation dominates"},
+    "class_persistence_strong_heads": {
+      "name mover": {"s": 9, "m": 11, "l": 8, "xl": 5, "p70m": 2, "p410m": 1, "p1.4b": 1, "p2.8b": 0},
+      "s2 inhibition": {"s": 3, "m": 1, "l": 0, "xl": 0, "p70m": 0, "p410m": 0, "p1.4b": 0, "p2.8b": "n/r"},
+      "induction": {"s": 2, "m": 0, "l": 0, "xl": "n/r", "p70m": 0, "p410m": 0, "p1.4b": 1, "p2.8b": "n/r"},
+      "duplicate token": {"s": 1, "m": 0, "l": 0, "xl": "n/r", "p70m": 0, "p410m": 0, "p1.4b": 0, "p2.8b": "n/r"},
+      "previous token": {"s": 1, "m": 0, "l": 0, "xl": "n/r", "p70m": 0, "p410m": 0, "p1.4b": 0, "p2.8b": "n/r"},
+      "negative": {"s": 2, "m": 2, "l": 2, "xl": 1, "p70m": 1, "p410m": 1, "p1.4b": 0, "p2.8b": 0}
+    },
+    "generation_contrast": {
+      "gpt2_logitdiff": [3.495, 3.583, 4.481, 3.788],
+      "pythia_logitdiff": [-0.572, -0.380, 0.852, -0.336],
+      "matched_scale": "gpt2-large 774M=4.48 & gpt2-xl 1.5B=3.79 vs pythia-1.4b 1.4B=0.85",
+      "pythia-1.4b_faithfulness_matches_gpt2small": "87.7% vs 87.8%"
+    },
+    "tier2_behavioral": {"Qwen2.5-0.5B_logitdiff": 5.064, "SmolLM2-1.7B_logitdiff": 4.172, "note": "both exceed GPT-2-small 3.49; behavioral-only, not in circuit fits"},
+    "updated_claim": "Name-mover backbone is universal across GPT-2 scale and into working Pythia; S-inhibition + induction/duplicate/previous-token are GPT-2-small-specific as identifiable single heads; faithfulness falls with GPT-2 scale (slope -0.61/decade, R2=0.75, n=4); generation dominates size behaviorally (Pythia fails IOI, GPT-2 & modern small models succeed)."
+  },
+  "comparison_to_original": [
+    {"quantity": "Circuit faithfulness F(C)/F(M) anchor", "original": "87.8% (F_M=3.2645, F_C=2.8655)", "followup": "88.6% discovered / 87.78% paper-circuit-via-001-harness at GPT-2-small; falls to 41.5% (medium), 11.5% (large)", "source_file": "run/replication/step8_completeness_result.json", "note": "within-GPT-2 collapse; fit slope -0.61/decade R2=0.75 n=4 p=0.13"},
+    {"quantity": "Baseline mean logit-diff (GPT-2 small)", "original": "3.49 (replicated) / 3.56 (paper)", "followup": "GPT-2 family 3.49-4.48; Pythia family <=0.85 (mostly <0); Qwen2.5-0.5B 5.06, SmolLM2-1.7B 4.17", "source_file": "run/replication/step2_baseline_result.json", "note": "generation dominates size: no pooled size trend (R2=0.01, n=10)"},
+    {"quantity": "Circuit size (#heads / #classes)", "original": "26 heads / 7 classes (paper curated, ioi_circuit_extraction.py)", "followup": "001 used a fixed 26-head/6-class template for every model -> head-count-vs-scale is degenerate (slope 0, R2 0); untestable from 001", "source_file": "followup/001-living-update/results/per_model/*.json (discovered_circuit_counts)", "note": "strong-head proxy trends down but noisy"},
+    {"quantity": "Cross-generation faithfulness", "original": "n/a (paper: GPT-2 small only)", "followup": "pythia-1.4b (only Pythia with F(M)>0) faithfulness 87.7% ~= GPT-2-small 87.8%", "source_file": "followup/001-living-update/results/per_model/EleutherAI__pythia-1.4b.json", "note": "discovery method transfers across rotary/NeoX when behavior present"}
+  ],
+  "artifacts": [
+    "results/fit_results.json",
+    "results/fig1_faithfulness_vs_scale.png",
+    "results/fig2_behavioral_vs_scale.png",
+    "results/fig3_class_persistence_heatmap.png",
+    "workspace/analyze_scaling.py",
+    "workspace/make_figures.py"
+  ],
+  "deviations": [
+    "Head-count-vs-scale is untestable from 001: its discovered circuit is a FIXED 26-head/6-class top-k template, so #heads/#name-mover/#S-inhibition are constant by construction (degenerate fits reported honestly). Substituted a strong-head (|Δlogit-diff|>=0.2) proxy for a qualitative trend. Named gap NOT filled (would be new GPU): re-running 001's dropped greedy/minimality search (C19/C21) on 2-3 rungs would give a size-varying circuit.",
+    "Faithfulness fits rest on <=5 points, none significant (GPT-2 n=4, p=0.13); within-GPT-2 collapse partly reflects the non-adaptive template + reduced path-patch N (30 vs 100) for large models. Not over-read as a law.",
+    "gpt2-xl (configs a,b only -> 3-class, 17 heads) and pythia-2.8b (config a only -> 2-class, 13 heads) are partial in 001; those class cells are n/r, not 0.",
+    "Faithfulness ratios excluded where F(M)<=0 (pythia-70m/410m/2.8b fail IOI) - ratio defined but meaningless.",
+    "Tier-2 set differs from the 002 instruction (named Qwen2.5-0.5B/Llama-3.2-3B/gemma-2-2b); 001 actually produced Qwen2.5-0.5B and SmolLM2-1.7B, which I used (no new GPU). Llama/gemma not run.",
+    "No new GPU jobs run; all numbers from 001 artifacts + this session's numpy/scipy fits; anchors read from run/replication."
+  ]
+}

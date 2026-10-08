@@ -1,0 +1,337 @@
+{
+  "model_id": "gpt2-large",
+  "configs_requested": "abcd",
+  "n_layers": 36,
+  "n_heads": 20,
+  "positional_embedding_type": "standard",
+  "n_names_total": 99,
+  "n_names_single_token": 99,
+  "baseline": {
+    "N": 2000,
+    "mean_logit_diff": 4.481138229370117,
+    "std_logit_diff": 1.3917492628097534,
+    "io_over_s_rate": 0.9994999766349792,
+    "mean_io_prob": 0.4329536557197571
+  },
+  "duration_seconds": 2199.334724664688,
+  "N_pp": 30,
+  "discovery": {
+    "N": 30,
+    "a_h_to_logits": {
+      "default_logit_diff": 4.435103416442871,
+      "seconds": 0.1145792007446289,
+      "name_movers_top": [
+        {
+          "layer": 20,
+          "head": 14,
+          "pct_change": -10.566975593566895
+        },
+        {
+          "layer": 22,
+          "head": 0,
+          "pct_change": -9.058404922485352
+        },
+        {
+          "layer": 23,
+          "head": 13,
+          "pct_change": -8.837968826293945
+        },
+        {
+          "layer": 26,
+          "head": 14,
+          "pct_change": -8.5595064163208
+        },
+        {
+          "layer": 27,
+          "head": 17,
+          "pct_change": -7.279300689697266
+        },
+        {
+          "layer": 28,
+          "head": 12,
+          "pct_change": -4.915200233459473
+        },
+        {
+          "layer": 30,
+          "head": 14,
+          "pct_change": -4.669809341430664
+        },
+        {
+          "layer": 18,
+          "head": 3,
+          "pct_change": -4.556962490081787
+        },
+        {
+          "layer": 21,
+          "head": 8,
+          "pct_change": -4.332225322723389
+        },
+        {
+          "layer": 17,
+          "head": 19,
+          "pct_change": -4.297046661376953
+        },
+        {
+          "layer": 30,
+          "head": 10,
+          "pct_change": -4.2509446144104
+        }
+      ],
+      "negNM_top": [
+        {
+          "layer": 32,
+          "head": 0,
+          "pct_change": 17.071264266967773
+        },
+        {
+          "layer": 26,
+          "head": 0,
+          "pct_change": 6.181579113006592
+        }
+      ]
+    },
+    "b_h_to_NMquery": {
+      "default_logit_diff": 4.435105800628662,
+      "seconds": 724.548378944397,
+      "nm_query_receivers": [
+        [
+          20,
+          14
+        ],
+        [
+          22,
+          0
+        ],
+        [
+          23,
+          13
+        ]
+      ],
+      "s_inhibition_top": [
+        {
+          "layer": 18,
+          "head": 5,
+          "pct_change": -3.0827996730804443
+        },
+        {
+          "layer": 20,
+          "head": 14,
+          "pct_change": -3.0186996459960938
+        },
+        {
+          "layer": 17,
+          "head": 9,
+          "pct_change": -1.5630532503128052
+        },
+        {
+          "layer": 19,
+          "head": 18,
+          "pct_change": -1.3656355142593384
+        }
+      ]
+    },
+    "c_h_to_SInhval": {
+      "default_logit_diff": 4.435105800628662,
+      "seconds": 725.9192147254944,
+      "value_senders_top": [
+        {
+          "layer": 15,
+          "head": 4,
+          "pct_change": -2.601705551147461
+        },
+        {
+          "layer": 17,
+          "head": 5,
+          "pct_change": -1.8667488098144531
+        },
+        {
+          "layer": 0,
+          "head": 14,
+          "pct_change": -1.657042145729065
+        },
+        {
+          "layer": 12,
+          "head": 13,
+          "pct_change": -1.5797501802444458
+        },
+        {
+          "layer": 16,
+          "head": 0,
+          "pct_change": -1.3834075927734375
+        },
+        {
+          "layer": 5,
+          "head": 8,
+          "pct_change": -0.8132164478302002
+        },
+        {
+          "layer": 8,
+          "head": 14,
+          "pct_change": -0.6598150730133057
+        }
+      ],
+      "split_note": "earliest-layer -> duplicate token, deeper -> induction (heuristic)"
+    },
+    "d_h_to_INDkey": {
+      "default_logit_diff": 4.435105800628662,
+      "seconds": 725.5677599906921,
+      "previous_token_top": [
+        {
+          "layer": 15,
+          "head": 19,
+          "pct_change": -0.3856644332408905
+        },
+        {
+          "layer": 14,
+          "head": 1,
+          "pct_change": -0.3826647996902466
+        }
+      ]
+    }
+  },
+  "discovered_circuit": {
+    "name mover": [
+      [
+        20,
+        14
+      ],
+      [
+        22,
+        0
+      ],
+      [
+        23,
+        13
+      ],
+      [
+        26,
+        14
+      ],
+      [
+        27,
+        17
+      ],
+      [
+        28,
+        12
+      ],
+      [
+        30,
+        14
+      ],
+      [
+        18,
+        3
+      ],
+      [
+        21,
+        8
+      ],
+      [
+        17,
+        19
+      ],
+      [
+        30,
+        10
+      ]
+    ],
+    "negative": [
+      [
+        32,
+        0
+      ],
+      [
+        26,
+        0
+      ]
+    ],
+    "s2 inhibition": [
+      [
+        18,
+        5
+      ],
+      [
+        20,
+        14
+      ],
+      [
+        17,
+        9
+      ],
+      [
+        19,
+        18
+      ]
+    ],
+    "duplicate token": [
+      [
+        0,
+        14
+      ],
+      [
+        5,
+        8
+      ],
+      [
+        8,
+        14
+      ]
+    ],
+    "induction": [
+      [
+        12,
+        13
+      ],
+      [
+        15,
+        4
+      ],
+      [
+        16,
+        0
+      ],
+      [
+        17,
+        5
+      ]
+    ],
+    "previous token": [
+      [
+        15,
+        19
+      ],
+      [
+        14,
+        1
+      ]
+    ]
+  },
+  "discovered_circuit_counts": {
+    "name mover": 11,
+    "negative": 2,
+    "s2 inhibition": 4,
+    "duplicate token": 3,
+    "induction": 4,
+    "previous token": 2
+  },
+  "discovered_circuit_total_heads": 26,
+  "discovered_circuit_num_classes": 6,
+  "faithfulness": {
+    "N": 30,
+    "F_M": 4.435103416442871,
+    "F_C": 0.5089275240898132,
+    "abs_F_M_minus_F_C": 3.926175892353058,
+    "F_C_over_F_M": 0.1147498663059346,
+    "n_heads_in_circuit": 25,
+    "classes_included": [
+      "duplicate token",
+      "induction",
+      "name mover",
+      "negative",
+      "previous token",
+      "s2 inhibition"
+    ]
+  },
+  "status": "ok"
+}

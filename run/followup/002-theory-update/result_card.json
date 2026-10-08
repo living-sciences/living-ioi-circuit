@@ -1,0 +1,64 @@
+{
+  "schema": "sai.followup.result_card/v1",
+  "headline": "The IOI name-mover backbone is universal across GPT-2 scale and into working Pythia, but the fixed-circuit's faithfulness falls with GPT-2 size (slope −0.61/decade, R²=0.75, n=4; anchor 87.8% → large 11.5%) and generation dominates size behaviourally — the whole Pythia family fails IOI while GPT-2 and modern small models succeed.",
+  "status": "partial",
+  "metrics": [
+    {"label": "Faithfulness F(C)/F(M) scaling — GPT-2 (F(M)>0)", "value": "−0.61 / decade (R²=0.75, n=4, p=0.13)", "baseline": "prior: ~flat",
+     "baseline_label": "working hypothesis (arXiv 2310.08744 reuse literature)",
+     "note": "overturns flat-faithfulness prior WITHIN GPT-2, but not significant; anchor 87.8% → medium 41.5% → large 11.5%"},
+    {"label": "Circuit head-count scaling", "value": "untestable (slope 0, R²=0)", "baseline": "prior: sub-linear growth",
+     "baseline_label": "working hypothesis",
+     "note": "001 fixed the discovered circuit at 26 heads/6 classes by template, so size is constant by construction — cannot test growth from 001 artifacts"},
+    {"label": "Name-mover strong heads — universal", "value": "present at every GPT-2 rung (9/11/8/5) + working Pythia", "baseline": "3 name-movers (paper GPT-2-small: 9.9, 9.6, 10.0)",
+     "baseline_label": "run/replication/step3_pathpatching_result.json",
+     "note": "only class with strong single heads everywhere; S-inhibition/induction/dup/prev are GPT-2-small-specific as single heads"},
+    {"label": "Baseline IOI logit-diff — Pythia-2.8B (generation)", "value": "−0.34", "baseline": "+3.49",
+     "baseline_label": "GPT-2-small replication (step2_baseline_result.json)",
+     "note": "whole Pythia family fails IOI (≤0.85, mostly <0) where every GPT-2 & modern small model succeeds; matched scale gpt2-xl 1.5B=3.79 vs pythia-1.4b=0.85"},
+    {"label": "Cross-generation faithfulness — Pythia-1.4B", "value": "87.7%", "baseline": "87.8%",
+     "baseline_label": "GPT-2-small replication (step8_completeness_result.json)",
+     "note": "the one Pythia rung that does the task matches GPT-2-small; discovery method transfers to rotary/NeoX when behaviour is present"}
+  ],
+  "tables": [
+    {"title": "Class-persistence: strong heads (|Δlogit-diff|≥0.2) per class × model [from 001 per_model/*.json]",
+     "columns": ["class", "gpt2-s", "m", "l", "xl", "py-70m", "410m", "1.4b", "2.8b"],
+     "rows": [
+       ["name mover", "9", "11", "8", "5", "2", "1", "1", "0"],
+       ["s2 inhibition", "3", "1", "0", "0", "0", "0", "0", "n/r"],
+       ["induction", "2", "0", "0", "n/r", "0", "0", "1", "n/r"],
+       ["duplicate token", "1", "0", "0", "n/r", "0", "0", "0", "n/r"],
+       ["previous token", "1", "0", "0", "n/r", "0", "0", "0", "n/r"],
+       ["negative", "2", "2", "2", "1", "1", "1", "0", "0"]
+     ],
+     "highlight_row": 0},
+    {"title": "Scale fits on log₁₀(params) — coefficient + R² (n small; read with care)",
+     "columns": ["relation", "n", "slope/decade", "R²", "verdict"],
+     "rows": [
+       ["faithfulness — GPT-2 (F(M)>0)", "4", "−0.61", "0.75", "falls, not significant"],
+       ["#heads (template)", "6", "0.00", "0.00", "degenerate — fixed at 26"],
+       ["#name-mover strong heads", "8", "−2.45", "0.10", "weak down, noisy"],
+       ["#S-inhibition strong heads", "7", "−1.05", "0.22", "down, noisy"],
+       ["logit-diff — all incl. Tier-2", "10", "+0.50", "0.01", "no size trend"]
+     ],
+     "highlight_row": 0}
+  ],
+  "figures": [
+    {"file": "results/fig3_class_persistence_heatmap.png",
+     "caption": "Strong IOI heads (|Δlogit-diff|≥0.2) per class × model. Name-mover (top row) is the only class strong at every GPT-2 rung and on working Pythia; S-inhibition and the induction/duplicate/previous-token chain are strong essentially only in GPT-2-small. n/r = discovery config not run in 001 (budget), grey — distinct from a true 0.",
+     "alt": "6×8 heatmap; top name-mover row dark across GPT-2 (9,11,8,5) fading in Pythia (2,1,1,0); other classes near-zero except GPT-2-small column; grey n/r cells for gpt2-xl and pythia-2.8b."},
+    {"file": "results/fig1_faithfulness_vs_scale.png",
+     "caption": "Discovered-circuit faithfulness F(C)/F(M) vs log-params. GPT-2 falls from 88.6% (small) to 11.5% (large); fit slope −0.61/decade, R²=0.75 (n=4, p=0.13). gpt2-xl (open marker) is a 3-class partial. Pythia-1.4b (diamond, the only Pythia with F(M)>0) sits on the anchor line. Dashed = GPT-2-small anchor 87.8%. Pythia 70m/410m/2.8b omitted (F(M)≤0).",
+     "alt": "Log-x scatter: GPT-2 points descending with a downward fit line; a single Pythia-1.4b diamond high near 0.88 on the dashed anchor line."},
+    {"file": "results/fig2_behavioral_vs_scale.png",
+     "caption": "Baseline IOI mean logit-diff (IO−S) vs log-params. GPT-2 family (3.5–4.5) and modern small models Qwen2.5-0.5B/SmolLM2-1.7B (4.2–5.1, Tier-2 behavioural) all solve IOI; the entire Pythia family sits at or below zero (fails), except a weak pythia-1.4b (+0.85). Generation, not size, decides.",
+     "alt": "Log-x line plot: blue GPT-2 and green modern-small lines well above 3; orange Pythia line near/below zero across all sizes."}
+  ],
+  "notes": [
+    "No new GPU jobs: every number is from 001-living-update artifacts (per_model/*.json, followup_summary.json) or this session's numpy/scipy fits; anchors read from run/replication (step2/step8). Strong-head recomputation reproduces 001's card head-counts exactly.",
+    "Biggest limitation: circuit head-count scaling is untestable because 001 fixed the discovered circuit at a 26-head/6-class template — the requested #heads-vs-scale fit is degenerate. Named gap (not filled, would be new GPU): re-run 001's dropped greedy/minimality search (C19/C21) on 2–3 rungs for a size-varying circuit.",
+    "Faithfulness fits use ≤5 points, none significant; within-GPT-2 collapse is partly template/reduced-N artifact (path-patch N=30 for large/xl vs 100 for small). Not a law.",
+    "gpt2-xl (3-class) and pythia-2.8b (2-class) are 001 partials; their missing class cells are n/r, not 0. Faithfulness ratios excluded where F(M)≤0 (pythia-70m/410m/2.8b fail IOI).",
+    "Tier-2 differs from the instruction's named set (Qwen2.5-0.5B/Llama-3.2-3B/gemma-2-2b): 001 produced Qwen2.5-0.5B & SmolLM2-1.7B, which I used; behavioural-only, never mixed into circuit-structure fits."
+  ],
+  "report_file": "report.md"
+}

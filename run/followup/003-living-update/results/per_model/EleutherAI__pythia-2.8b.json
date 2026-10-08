@@ -1,0 +1,171 @@
+{
+  "model_id": "EleutherAI/pythia-2.8b",
+  "configs_requested": "a",
+  "n_layers": 32,
+  "n_heads": 32,
+  "positional_embedding_type": "rotary",
+  "n_names_total": 99,
+  "n_names_single_token": 88,
+  "baseline": {
+    "N": 2000,
+    "mean_logit_diff": -0.3360561728477478,
+    "std_logit_diff": 1.2833136320114136,
+    "io_over_s_rate": 0.4065000116825104,
+    "mean_io_prob": 0.035866085439920425
+  },
+  "duration_seconds": 1657.3694431781769,
+  "N_pp": 30,
+  "discovery": {
+    "N": 30,
+    "a_h_to_logits": {
+      "default_logit_diff": -0.5742672681808472,
+      "seconds": 1030.4818518161774,
+      "name_movers_top": [
+        {
+          "layer": 22,
+          "head": 31,
+          "pct_change": -33.29169845581055
+        },
+        {
+          "layer": 26,
+          "head": 13,
+          "pct_change": -14.432826042175293
+        },
+        {
+          "layer": 18,
+          "head": 7,
+          "pct_change": -13.440933227539062
+        },
+        {
+          "layer": 18,
+          "head": 8,
+          "pct_change": -12.002493858337402
+        },
+        {
+          "layer": 19,
+          "head": 12,
+          "pct_change": -8.616543769836426
+        },
+        {
+          "layer": 25,
+          "head": 5,
+          "pct_change": -8.521458625793457
+        },
+        {
+          "layer": 22,
+          "head": 24,
+          "pct_change": -8.225878715515137
+        },
+        {
+          "layer": 19,
+          "head": 17,
+          "pct_change": -7.962982654571533
+        },
+        {
+          "layer": 18,
+          "head": 23,
+          "pct_change": -7.0902228355407715
+        },
+        {
+          "layer": 18,
+          "head": 4,
+          "pct_change": -6.96694803237915
+        },
+        {
+          "layer": 24,
+          "head": 16,
+          "pct_change": -6.580933570861816
+        }
+      ],
+      "negNM_top": [
+        {
+          "layer": 20,
+          "head": 25,
+          "pct_change": 33.11088180541992
+        },
+        {
+          "layer": 25,
+          "head": 2,
+          "pct_change": 23.013282775878906
+        }
+      ]
+    }
+  },
+  "discovered_circuit": {
+    "name mover": [
+      [
+        22,
+        31
+      ],
+      [
+        26,
+        13
+      ],
+      [
+        18,
+        7
+      ],
+      [
+        18,
+        8
+      ],
+      [
+        19,
+        12
+      ],
+      [
+        25,
+        5
+      ],
+      [
+        22,
+        24
+      ],
+      [
+        19,
+        17
+      ],
+      [
+        18,
+        23
+      ],
+      [
+        18,
+        4
+      ],
+      [
+        24,
+        16
+      ]
+    ],
+    "negative": [
+      [
+        20,
+        25
+      ],
+      [
+        25,
+        2
+      ]
+    ]
+  },
+  "discovered_circuit_counts": {
+    "name mover": 11,
+    "negative": 2
+  },
+  "discovered_circuit_total_heads": 13,
+  "discovered_circuit_num_classes": 2,
+  "faithfulness": {
+    "N": 30,
+    "F_M": -0.5742672681808472,
+    "F_C": -1.3060863018035889,
+    "abs_F_M_minus_F_C": 0.7318190336227417,
+    "F_C_over_F_M": 2.274352682403411,
+    "n_heads_in_circuit": 13,
+    "classes_included": [
+      "name mover",
+      "negative"
+    ]
+  },
+  "status": "ok"
+}

@@ -1,0 +1,21 @@
+{
+  "N": 500,
+  "example_adv_IO_sentence": "Then, Matthew and Robert had a lot of fun at the school. Matthew enjoyed being with a friend. Matthew enjoyed being with a friend. Robert gave a ring to Matthew",
+  "example_control_S_sentence": "Then, Matthew and Robert had a lot of fun at the school. Robert enjoyed being with a friend. Robert enjoyed being with a friend. Robert gave a ring to Matthew",
+  "pIOI": {
+    "mean_logit_diff": 3.437238931655884,
+    "mean_io_prob": 0.4941308796405792,
+    "prop_S_logit_gt_IO_logit": 0.00800000037997961
+  },
+  "control_added_S": {
+    "mean_logit_diff": 3.0853171348571777,
+    "mean_io_prob": 0.5713275671005249,
+    "prop_S_logit_gt_IO_logit": 0.02200000174343586
+  },
+  "adversarial_added_IO": {
+    "mean_logit_diff": 0.5930866599082947,
+    "mean_io_prob": 0.3023752272129059,
+    "prop_S_logit_gt_IO_logit": 0.36000001430511475
+  },
+  "duration_seconds": 25.887574672698975
+}

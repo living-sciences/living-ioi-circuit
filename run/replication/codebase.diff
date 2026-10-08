@@ -1,0 +1,147 @@
+Binary files /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/package/easy_transformer/__pycache__/activation_cache.cpython-310.pyc and /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/run/replication/codebase/easy_transformer/__pycache__/activation_cache.cpython-310.pyc differ
+Binary files /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/package/easy_transformer/__pycache__/caching.cpython-310.pyc and /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/run/replication/codebase/easy_transformer/__pycache__/caching.cpython-310.pyc differ
+Binary files /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/package/easy_transformer/__pycache__/components.cpython-310.pyc and /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/run/replication/codebase/easy_transformer/__pycache__/components.cpython-310.pyc differ
+Binary files /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/package/easy_transformer/__pycache__/EasyTransformerConfig.cpython-310.pyc and /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/run/replication/codebase/easy_transformer/__pycache__/EasyTransformerConfig.cpython-310.pyc differ
+Binary files /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/package/easy_transformer/__pycache__/EasyTransformer.cpython-310.pyc and /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/run/replication/codebase/easy_transformer/__pycache__/EasyTransformer.cpython-310.pyc differ
+Binary files /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/package/easy_transformer/__pycache__/evals.cpython-310.pyc and /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/run/replication/codebase/easy_transformer/__pycache__/evals.cpython-310.pyc differ
+Binary files /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/package/easy_transformer/__pycache__/experiments.cpython-310.pyc and /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/run/replication/codebase/easy_transformer/__pycache__/experiments.cpython-310.pyc differ
+Binary files /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/package/easy_transformer/__pycache__/hook_points.cpython-310.pyc and /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/run/replication/codebase/easy_transformer/__pycache__/hook_points.cpython-310.pyc differ
+Binary files /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/package/easy_transformer/__pycache__/__init__.cpython-310.pyc and /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/run/replication/codebase/easy_transformer/__pycache__/__init__.cpython-310.pyc differ
+Binary files /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/package/easy_transformer/__pycache__/ioi_circuit_extraction.cpython-310.pyc and /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/run/replication/codebase/easy_transformer/__pycache__/ioi_circuit_extraction.cpython-310.pyc differ
+Binary files /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/package/easy_transformer/__pycache__/ioi_dataset.cpython-310.pyc and /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/run/replication/codebase/easy_transformer/__pycache__/ioi_dataset.cpython-310.pyc differ
+Binary files /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/package/easy_transformer/__pycache__/ioi_utils.cpython-310.pyc and /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/run/replication/codebase/easy_transformer/__pycache__/ioi_utils.cpython-310.pyc differ
+Binary files /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/package/easy_transformer/__pycache__/utils.cpython-310.pyc and /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/run/replication/codebase/easy_transformer/__pycache__/utils.cpython-310.pyc differ
+Binary files /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/package/easy_transformer/__pycache__/weight_conversion.cpython-310.pyc and /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/run/replication/codebase/easy_transformer/__pycache__/weight_conversion.cpython-310.pyc differ
+diff -ruN /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/package/easy_transformer.egg-info/dependency_links.txt /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/run/replication/codebase/easy_transformer.egg-info/dependency_links.txt
+--- /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/package/easy_transformer.egg-info/dependency_links.txt	1969-12-31 18:00:00.000000000 -0600
++++ /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/run/replication/codebase/easy_transformer.egg-info/dependency_links.txt	2026-09-07 01:30:03.709129427 -0500
+@@ -0,0 +1 @@
++
+diff -ruN /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/package/easy_transformer.egg-info/PKG-INFO /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/run/replication/codebase/easy_transformer.egg-info/PKG-INFO
+--- /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/package/easy_transformer.egg-info/PKG-INFO	1969-12-31 18:00:00.000000000 -0600
++++ /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/run/replication/codebase/easy_transformer.egg-info/PKG-INFO	2026-09-07 01:30:03.709129427 -0500
+@@ -0,0 +1,71 @@
++Metadata-Version: 2.4
++Name: easy_transformer
++Version: 0.1.0
++Summary: An implementation of transformers tailored for mechanistic interpretability.
++License: LICENSE
++License-File: LICENSE
++Requires-Dist: einops
++Requires-Dist: numpy
++Requires-Dist: torch
++Requires-Dist: datasets
++Requires-Dist: transformers
++Requires-Dist: tqdm
++Requires-Dist: pandas
++Requires-Dist: datasets
++Requires-Dist: wandb
++Requires-Dist: fancy_einsum
++Requires-Dist: matplotlib
++Requires-Dist: IPython
++Dynamic: description
++Dynamic: license
++Dynamic: license-file
++Dynamic: requires-dist
++Dynamic: summary
++
++This repository contains the code for all experiments in the paper "Interpretability in the Wild: a Circuit for Indirect Object Identification in GPT-2 Small" (Wang et al, 2022).
++
++<img src="https://i.imgur.com/iptFVBc.png">
++
++This is intended as a one-time code drop. <b>The authors recommend those interested in mechanistic interpretability use the <a href="https://github.com/TransformerLensOrg/TransformerLens">Transformer Lens</a> library</b>. 
++
++Specifically, <a href="https://colab.research.google.com/github/TransformerLensOrg/TransformerLens/blob/main/demos/Main_Demo.ipynb">this TransformerLens demo</a> goes through a number of experiments from the Interpretability in the Wild paper, and also introduces other features of that library, which are helpful for building off of our research.
++
++Contact arthurconmy@gmail.com or comment on <a href="https://github.com/redwoodresearch/Easy-Transformer/pull/8">this</a> PR (sadly issues don't work for forks) for proposed changes.
++
++# Quick Start
++
++See and run the experiments <a href="https://colab.research.google.com/drive/1n4Wgulv5ev5rgRUL7ypOw0odga9LEWHA?usp=sharing">on Google Colab</a>.
++
++# Setup
++
++## Option 1) install with pip
++
++```
++pip install git+https://github.com/redwoodresearch/Easy-Transformer.git
++```
++
++## Option 2) clone repository (for development, and finer tuning)
++
++```bash
++git clone https://github.com/redwoodresearch/Easy-Transformer/
++pip install -r requirements.txt
++```
++
++# In this repo
++
++In this repo, you can find the following notebooks (some are in `easy_transformer/`):
++
++* `experiments.py`: a notebook of several of the most interesting experiments of the IOI project.
++* `completeness.py`: a notebook that generate the completeness plots in the paper, and implements the completeness functions.
++* `minimality.py`: as above for minimality.
++* `advex.py`: a notebook that generates adversarial examples as in the paper.
++`
++# Easy Transformer
++
++<i>(later renamed "TransformerLens")</i>
++
++## An implementation of transformers tailored for mechanistic interpretability.
++
++It supports the importation of open sources models, a convenient handling of hooks to get access to intermediate activations and features to perform simple emperiments such as ablations and patching.
++
++A demo notebook can be found [here](https://colab.research.google.com/github/TransformerLensOrg/TransformerLens/blob/main/demos/Main_Demo.ipynb), with links to other tutorials and demos too.
+diff -ruN /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/package/easy_transformer.egg-info/requires.txt /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/run/replication/codebase/easy_transformer.egg-info/requires.txt
+--- /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/package/easy_transformer.egg-info/requires.txt	1969-12-31 18:00:00.000000000 -0600
++++ /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/run/replication/codebase/easy_transformer.egg-info/requires.txt	2026-09-07 01:30:03.713129396 -0500
+@@ -0,0 +1,12 @@
++einops
++numpy
++torch
++datasets
++transformers
++tqdm
++pandas
++datasets
++wandb
++fancy_einsum
++matplotlib
++IPython
+diff -ruN /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/package/easy_transformer.egg-info/SOURCES.txt /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/run/replication/codebase/easy_transformer.egg-info/SOURCES.txt
+--- /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/package/easy_transformer.egg-info/SOURCES.txt	1969-12-31 18:00:00.000000000 -0600
++++ /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/run/replication/codebase/easy_transformer.egg-info/SOURCES.txt	2026-09-07 01:30:03.761129018 -0500
+@@ -0,0 +1,27 @@
++LICENSE
++README.md
++setup.py
++easy_transformer/EasyTransformer.py
++easy_transformer/EasyTransformerConfig.py
++easy_transformer/__init__.py
++easy_transformer/activation_cache.py
++easy_transformer/advex.py
++easy_transformer/caching.py
++easy_transformer/completeness.py
++easy_transformer/components.py
++easy_transformer/evals.py
++easy_transformer/experiments.py
++easy_transformer/hook_points.py
++easy_transformer/ioi_circuit_extraction.py
++easy_transformer/ioi_dataset.py
++easy_transformer/ioi_utils.py
++easy_transformer/minimality.py
++easy_transformer/train.py
++easy_transformer/utils.py
++easy_transformer/utils_circuit_discovery.py
++easy_transformer/weight_conversion.py
++easy_transformer.egg-info/PKG-INFO
++easy_transformer.egg-info/SOURCES.txt
++easy_transformer.egg-info/dependency_links.txt
++easy_transformer.egg-info/requires.txt
++easy_transformer.egg-info/top_level.txt
+\ No newline at end of file
+diff -ruN /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/package/easy_transformer.egg-info/top_level.txt /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/run/replication/codebase/easy_transformer.egg-info/top_level.txt
+--- /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/package/easy_transformer.egg-info/top_level.txt	1969-12-31 18:00:00.000000000 -0600
++++ /net/projects2/chai-lab-models/haokunliu/alignment-batch/alignment_papers/test-corpus/ioi-gpt2-circuit/run/replication/codebase/easy_transformer.egg-info/top_level.txt	2026-09-07 01:30:03.713129396 -0500
+@@ -0,0 +1 @@
++easy_transformer

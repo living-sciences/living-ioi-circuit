@@ -1,0 +1,53 @@
+{
+  "schema": "sai.followup.result_card/v1",
+  "headline": "IOI behaviour still holds — stronger — in the newest 2026 models: Qwen3.5-9B-Base logit-diff +5.46 (IO>S 99.0%) and gemma-4-12B +5.71 (IO>S 100%), both ~1.6x the GPT-2-small replication anchor +3.49.",
+  "status": "completed",
+  "metrics": [
+    {"label": "IOI logit-diff (IO−S) — Qwen3.5-9B-Base (Mar 2026)", "value": "+5.46", "baseline": "+3.49",
+     "baseline_label": "GPT-2 small replication (step2_baseline_result.json)",
+     "note": "newest Qwen; behavioural-only via raw transformers. IOI holds and is stronger than the anchor. Instruct variant +5.84."},
+    {"label": "IO>S rate — Qwen3.5-9B-Base", "value": "99.0%", "baseline": "99.51%",
+     "baseline_label": "GPT-2 small replication (step2_baseline_result.json)",
+     "note": "near-perfect IO>S preference preserved into 2026 (all 200 prompts scored, 97/97 single-token names)."},
+    {"label": "IOI logit-diff (IO−S) — gemma-4-12B (base)", "value": "+5.71", "baseline": "+3.49",
+     "baseline_label": "GPT-2 small replication (on-disk)",
+     "note": "second 2026 model (Gemma4Unified arch), IO>S 100.0%; also behavioural-only."},
+    {"label": "IOI logit-diff — 2026 vs 2024 modern (both behavioural)", "value": "+5.46 / +5.71", "baseline": "+5.06",
+     "baseline_label": "Qwen2.5-0.5B, 001 living-update (per_model/tier2_Qwen__Qwen2.5-0.5B.json)",
+     "note": "the 2026 flagships stay at the top of the range set by the 2024 modern models — no regression."},
+    {"label": "Circuit faithfulness for 2026 models", "value": "not computed", "baseline": "87.8% (GPT-2 small)",
+     "baseline_label": "replication step8_completeness_result.json",
+     "note": "multimodal arch: fork/TransformerLens/nnsight cannot wrap qwen3_5/gemma4_unified -> behavioural test only, as instructed."}
+  ],
+  "tables": [
+    {"title": "IOI behaviour over generations (2026 rows new; originals reused from run/replication + 001)",
+     "columns": ["Model", "~Year", "Params", "logit-diff (IO−S)", "IO>S", "does IOI?"],
+     "rows": [
+       ["GPT-2 small (anchor)", "2019", "124M", "3.49", "99.5%", "yes"],
+       ["gpt2-large", "2019", "774M", "4.48", "99.9%", "yes"],
+       ["pythia-70m / 410m / 2.8b", "2023", "70M–2.8B", "−0.57 … −0.34", "38–41%", "no"],
+       ["pythia-1.4b", "2023", "1.4B", "0.85", "71.6%", "weak"],
+       ["Qwen2.5-0.5B", "2024", "494M", "5.06", "100%", "yes"],
+       ["SmolLM2-1.7B", "2024", "1.7B", "4.17", "99.2%", "yes"],
+       ["Qwen3.5-9B-Base", "2026", "9B", "+5.46", "99.0%", "yes"],
+       ["Qwen3.5-9B (instruct)", "2026", "9B", "+5.84", "99.5%", "yes"],
+       ["gemma-4-12B (base)", "2026", "12B", "+5.71", "100%", "yes"]
+     ],
+     "highlight_row": 6}
+  ],
+  "figures": [
+    {"file": "results/behavioral_over_time.png",
+     "caption": "IOI mean logit-diff (IO−S) vs approximate release year, GPT-2 (2019) → Pythia (2023) → modern-2024 → 2026 flagships (stars). IOI behaviour holds and strengthens into 2026 (all 2026 points ≥ +5.4, well above the GPT-2-small anchor 3.49, dashed); the 2023 Pythia family is the only generation that fails (at/below 0). Originals reused from disk; 2026 points computed this session.",
+     "alt": "Scatter over years: GPT-2 cluster near 3.5–4.5, Pythia family near or below zero at 2023, modern-2024 diamonds ~4–5, and three 2026 stars at ~5.5–5.8 at the top right."},
+    {"file": "results/behavioral_vs_scale.png",
+     "caption": "Same baseline IOI logit-diff vs parameter count (log-x), with the 2026 flagships (stars) added. GPT-2 family and both modern generations solve IOI strongly; the Pythia family sits at/below zero regardless of scale.",
+     "alt": "Log-x scatter of IOI logit-diff vs params: GPT-2 line 3.5–4.5, Pythia line near/below 0, modern-2024 and 2026 points at 4–5.8."}
+  ],
+  "notes": [
+    "2026 models are BEHAVIOURAL-only (as instructed): the easy_transformer fork / TransformerLens cannot load qwen3_5 or gemma4_unified and nnsight cannot wrap them, so no circuit discovery / faithfulness for them — this shows behaviour survival, not circuit survival.",
+    "All prior (GPT-2, Pythia, 2024 modern) numbers reused verbatim from 001 living-update + run/replication; every 2026 number is from this session (200 IOI prompts, single-token-name filter, END next-token scoring).",
+    "Loader: AutoModelForImageTextToText, dtype=bfloat16, offline from local cache. Text decoder is m.model.language_model (32 layers Qwen3.5 / 48 gemma-4), not m.language_model as the instruction sketch had it. Fresh venv (transformers 5.17.0) since the reused 001 venv 4.46.3 lacks qwen3_5. No /home writes.",
+    "gemma-4-12B was fully downloaded (23GB) and hookable, so included as a genuine second 2026 point (base). Release years are approximate, used only for the over-time x-axis."
+  ],
+  "report_file": "report.md"
+}
